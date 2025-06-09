@@ -1,0 +1,38 @@
+.content {
+  display: flex;
+  justify-content: center;
+
+  .product-container {
+    display: flex;
+    width: 75rem;
+    flex-direction: row;
+  }
+
+  .product {
+    display: flex;
+  }
+
+  .product-image {
+    min-width: 25rem;
+    max-width: 25rem;
+    img {
+      max-width: 100%;
+    }
+  }
+
+  .product-details {
+    display: flex;
+    flex-direction: column;
+    .brand h2 {
+      margin-top: 0;
+      font-weight: 300;
+      text-transform: uppercase;
+      font-size: 1.5rem;
+    }
+    .price h3 {
+      margin-top: 0;
+      text-transform: uppercase;
+      font-size: 1.5rem;
+    }
+  }
+}

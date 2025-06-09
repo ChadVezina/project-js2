@@ -1,0 +1,16 @@
+:root {
+  --primary: #474787;
+  --dark: #2c2c54;
+  --accent: #40407f;
+  --text: #444;
+  --divider: #ecf0f1;
+  --dark-grey: #324355;
+  --font-family: "Ancizar Sans", sans-serif;
+  --error: #e74c3c;
+  --hint: #95a5a6;
+  // --box-shadow: 0 1px 2px 0 rgba(206, 209, 213, 0.3),
+  //   0 1px 3px 1px rgba(206, 209, 213, 0.15);
+  --box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  --border: 1px solid #eee;
+}

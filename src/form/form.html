@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&display=swap"
+      rel="stylesheet"
+    />
+    <title>Projet</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a class="header-brand" href="/">Parfums</a>
+        <ul>
+          <li>
+            <a href="../index.html" class="header-nav">Accueil</a>
+          </li>
+          <li>
+            <a href="./form.html" class="header-nav active"
+              >Ajouter un produit</a
+            >
+          </li>
+        </ul>
+      </header>
+      <div class="content">
+        <form>
+          <h2 class="title-underline">Ajouter un produit</h2>
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" name="nom" />
+          </div>
+          <div class="form-group">
+            <label>Maison</label>
+            <input type="text" name="maison" />
+          </div>
+          <div class="form-group">
+            <label>Prix</label>
+            <input type="text" name="prix" />
+          </div>
+          <div class="form-group">
+            <label>Image</label>
+            <input type="text" name="image" />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description"></textarea>
+          </div>
+          <ul class="text-error" id="errors"></ul>
+          <div class="form-btn-container">
+            <button class="btn btn-secondary">Annuler</button>
+            <button class="btn btn-primary">Sauvegarder</button>
+          </div>
+        </form>
+      </div>
+      <footer>© Parfums</footer>
+    </div>
+    <script type="module" src="./form.js"></script>
+  </body>
+</html>
