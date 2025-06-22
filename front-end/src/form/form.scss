@@ -1,0 +1,168 @@
+@use "../assets/styles/partials/media-queries" as *;
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 4rem 2rem;
+
+    form {
+        width: 100%;
+        max-width: 700px;
+        padding: 4rem;
+        background: white;
+        box-shadow: var(--box-shadow-hover);
+        border-radius: var(--border-radius-large);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        @include sm {
+            padding: 2rem;
+            margin: 1rem;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--warning));
+            border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+        }
+
+        .title-underline {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.8rem;
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-direction: column;
+
+            label {
+                font-size: 1.6rem;
+                color: var(--dark);
+                font-weight: var(--font-weight-medium);
+                margin-bottom: 0.8rem;
+                position: relative;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: -3px;
+                    left: 0;
+                    width: 30px;
+                    height: 2px;
+                    background: var(--primary);
+                    border-radius: 1px;
+                }
+            }
+
+            input,
+            textarea {
+                border: 2px solid var(--divider);
+                padding: 1.2rem 1.5rem;
+                outline: 0;
+                border-radius: var(--border-radius);
+                font-size: 1.5rem;
+                transition: var(--transition);
+                background: var(--background);
+
+                &:focus {
+                    border-color: var(--primary);
+                    background: white;
+                    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+                }
+
+                &::placeholder {
+                    color: var(--text-light);
+                    font-style: italic;
+                }
+            }
+
+            textarea {
+                min-height: 120px;
+                resize: vertical;
+                font-family: var(--font-family);
+            }
+        }
+
+        .form-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--divider);
+
+            @include sm {
+                flex-direction: column-reverse;
+
+                .btn {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+// Error styling improvements
+.text-error {
+    background: rgba(229, 57, 53, 0.05);
+    border-left: 4px solid var(--danger);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    padding: 1rem;
+    margin: 1rem 0;
+
+    li {
+        font-size: 1.4rem;
+        line-height: 1.6;
+
+        &::before {
+            content: "●";
+            margin-right: 0.8rem;
+            color: var(--danger);
+        }
+    }
+}
+
+// Add cube pattern for visual interest
+.form-group {
+    position: relative;
+
+    &:nth-child(even) {
+        &::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            transform: rotate(45deg);
+            opacity: 0.1;
+        }
+    }
+
+    &:nth-child(odd) {
+        &::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+    }
+}

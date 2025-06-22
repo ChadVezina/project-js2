@@ -1,0 +1,109 @@
+@use "./partials/base" as *;
+@use "./partials/variables" as *;
+@use "./partials/reset" as *;
+@use "./partials/classes" as *;
+@use "./partials/utils" as *;
+@use "./partials/media-queries" as *;
+
+.container {
+    min-height: 100vh;
+    display: grid;
+    grid:
+        "header" auto
+        "content" 1fr
+        "footer" auto /
+        auto;
+}
+
+header {
+    grid-area: header;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-grey) 100%);
+    padding: 2rem 3rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+
+    // Cube pattern in header
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--warning), var(--danger));
+    }
+
+    a {
+        color: white;
+        transition: var(--transition);
+    }
+
+    .header-brand {
+        font-size: 4.2rem;
+        font-weight: var(--font-weight-bold);
+        background: linear-gradient(45deg, var(--primary), var(--warning));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    ul {
+        display: flex;
+        gap: 2rem;
+
+        li {
+            .header-nav {
+                font-size: 1.8rem;
+                padding: 1rem 2rem;
+                border-radius: var(--border-radius);
+                transition: var(--transition);
+                position: relative;
+
+                &:hover {
+                    color: white;
+                    background: rgba(255, 255, 255, 0.1);
+                }
+
+                &.active {
+                    background: var(--primary);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+    }
+}
+
+.content {
+    grid-area: content;
+    padding: 4rem 2rem;
+    position: relative;
+}
+
+footer {
+    grid-area: footer;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, var(--dark-grey) 0%, var(--dark) 100%);
+    font-size: 1.6rem;
+    text-align: center;
+    color: white;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    }
+}
