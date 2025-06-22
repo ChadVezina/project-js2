@@ -114,7 +114,6 @@
     }
 }
 
-// Error styling improvements
 .text-error {
     background: rgba(229, 57, 53, 0.05);
     border-left: 4px solid var(--danger);
@@ -164,5 +163,128 @@
             border-radius: 50%;
             opacity: 0.1;
         }
+    }
+}
+
+// Add these new BEM styles for form success message
+.form {
+    &__success-message {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+        border-left: 4px solid #4caf50;
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        padding: 1.5rem 2rem;
+        margin-bottom: 2rem;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    &__success-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    &__success-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        background: #4caf50;
+        color: white;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1.6rem;
+    }
+
+    &__success-text {
+        font-size: 1.6rem;
+        color: #2e7d32;
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+// Enhanced form group BEM styles
+.form-group {
+    position: relative;
+
+    &--error {
+        .form-group__error {
+            display: block;
+        }
+    }
+
+    &__input--error {
+        border-color: var(--danger) !important;
+        background: rgba(229, 57, 53, 0.05) !important;
+
+        &:focus {
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2) !important;
+        }
+    }
+
+    &__error {
+        display: none;
+        color: var(--danger);
+        font-size: 1.3rem;
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(229, 57, 53, 0.05);
+        border-left: 3px solid var(--danger);
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        animation: fadeIn 0.2s ease-out;
+    }
+}
+
+.btn {
+    &--loading {
+        opacity: 0.7;
+        cursor: not-allowed;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 1.5rem;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    }
+
+    
+}
+
+// Animations
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-50%) rotate(360deg);
     }
 }

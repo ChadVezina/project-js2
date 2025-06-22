@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Connexion | Inscription</title>
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <script type="module" defer src="./auth.js"></script>
+    </head>
+    <body>
+        <div class="content">
+            <div class="auth">
+                <div class="auth__container">
+                    <div class="auth__header">
+                        <h1 class="auth__title">Bienvenue</h1>
+                        <div class="auth__tabs">
+                            <button class="auth__tab auth__tab--active" data-tab="login">Connexion</button>
+                            <button class="auth__tab" data-tab="register">Inscription</button>
+                        </div>
+                    </div>
+
+                    <form class="auth__form auth__form--login" id="loginForm">
+                        <div class="auth__form-group">
+                            <label class="auth__label" for="loginEmail">Email</label>
+                            <input class="auth__input" type="email" id="loginEmail" name="email" placeholder="votre@email.com" required />
+                            <span class="auth__error" data-field="email"></span>
+                        </div>
+
+                        <div class="auth__form-group">
+                            <label class="auth__label" for="loginPassword">Mot de passe</label>
+                            <input class="auth__input" type="password" id="loginPassword" name="password" placeholder="Votre mot de passe" required />
+                            <span class="auth__error" data-field="password"></span>
+                        </div>
+
+                        <div class="auth__options">
+                            <label class="auth__checkbox">
+                                <input type="checkbox" name="remember" />
+                                <span class="auth__checkbox-custom"></span>
+                                Se souvenir de moi
+                            </label>
+                            <a href="#" class="auth__link">Mot de passe oublié?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary auth__submit">Se connecter</button>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form class="auth__form auth__form--register auth__form--hidden" id="registerForm">
+                        <div class="auth__form-group">
+                            <label class="auth__label" for="registerName">Nom complet</label>
+                            <input class="auth__input" type="text" id="registerName" name="name" placeholder="Jean Dupont" required />
+                            <span class="auth__error" data-field="name"></span>
+                        </div>
+
+                        <div class="auth__form-group">
+                            <label class="auth__label" for="registerEmail">Email</label>
+                            <input class="auth__input" type="email" id="registerEmail" name="email" placeholder="votre@email.com" required />
+                            <span class="auth__error" data-field="email"></span>
+                        </div>
+
+                        <div class="auth__form-group">
+                            <label class="auth__label" for="registerPassword">Mot de passe</label>
+                            <input
+                                class="auth__input"
+                                type="password"
+                                id="registerPassword"
+                                name="password"
+                                placeholder="Minimum 8 caractères"
+                                required
+                            />
+                            <span class="auth__error" data-field="password"></span>
+                        </div>
+
+                        <div class="auth__form-group">
+                            <label class="auth__label" for="confirmPassword">Confirmer le mot de passe</label>
+                            <input
+                                class="auth__input"
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Répétez votre mot de passe"
+                                required
+                            />
+                            <span class="auth__error" data-field="confirmPassword"></span>
+                        </div>
+
+                        <div class="auth__options">
+                            <label class="auth__checkbox">
+                                <input type="checkbox" name="terms" required />
+                                <span class="auth__checkbox-custom"></span>
+                                <span>J'accepte les <a href="#" class="auth__link">conditions d'utilisation</a></span> 
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary auth__submit">S'inscrire</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
