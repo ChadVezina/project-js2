@@ -1,4 +1,4 @@
-@use "../assets/styles/partials/media-queries" as *;
+@use "../../assets/styles/partials/media-queries" as *;
 
 .content {
     display: flex;
@@ -154,21 +154,5 @@
                 }
             }
         }
-    }
-}
-
-// Add some cube-inspired decorative elements
-.product-container {
-    &::after {
-        content: "";
-        position: absolute;
-        bottom: 2rem;
-        right: 2rem;
-        width: 30px;
-        height: 30px;
-        background: linear-gradient(45deg, var(--primary) 50%, transparent 50%), linear-gradient(-45deg, var(--secondary) 50%, transparent 50%);
-        background-size: 15px 15px;
-        opacity: 0.1;
-        border-radius: 3px;
     }
 }

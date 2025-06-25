@@ -1,29 +1,29 @@
-import "../assets/styles/styles.scss";
-import "./auth.scss";
-
-class AuthManager {
-    constructor() {
+export class AuthManager {
+    constructor(options = {}) {
         this.currentTab = "login";
-        this.init();
+        this.options = options;
+
+        if (!options.deferInit) {
+            this.init();
+        }
     }
 
-    init() {
+    async init() {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
         this.bindEvents();
         this.setupFormValidation();
     }
 
     bindEvents() {
-        // Tab switching
         const tabs = document.querySelectorAll(".auth__tab");
         tabs.forEach((tab) => {
             tab.addEventListener("click", (e) => this.switchTab(e.target.dataset.tab));
         });
 
-        // Form submissions
         document.getElementById("loginForm").addEventListener("submit", (e) => this.handleLogin(e));
         document.getElementById("registerForm").addEventListener("submit", (e) => this.handleRegister(e));
 
-        // Real-time validation
         const inputs = document.querySelectorAll(".auth__input");
         inputs.forEach((input) => {
             input.addEventListener("blur", () => this.validateField(input));
@@ -34,12 +34,10 @@ class AuthManager {
     switchTab(tab) {
         this.currentTab = tab;
 
-        // Update tab buttons
         document.querySelectorAll(".auth__tab").forEach((t) => {
             t.classList.toggle("auth__tab--active", t.dataset.tab === tab);
         });
 
-        // Update forms
         document.querySelectorAll(".auth__form").forEach((form) => {
             if (form.classList.contains(`auth__form--${tab}`)) {
                 form.classList.remove("auth__form--hidden");
@@ -48,7 +46,6 @@ class AuthManager {
             }
         });
 
-        // Clear all errors
         this.clearAllErrors();
     }
 
@@ -159,7 +156,6 @@ class AuthManager {
             }
         });
 
-        // Check terms checkbox for register form
         if (form.id === "registerForm") {
             const termsCheckbox = form.querySelector('[name="terms"]');
             if (!termsCheckbox.checked) {
@@ -183,14 +179,12 @@ class AuthManager {
                 remember: formData.get("remember") === "on",
             };
 
-            // Simulate login process
             this.showLoadingState(form);
 
             setTimeout(() => {
                 this.hideLoadingState(form);
                 console.log("Login successful:", credentials);
                 alert("Connexion réussie! Redirection...");
-                // Redirect to main page
                 window.location.href = "../index.html";
             }, 1500);
         }
@@ -240,6 +234,3 @@ class AuthManager {
         }
     }
 }
-
-export const authManager = new AuthManager();
-

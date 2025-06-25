@@ -7,14 +7,17 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&display=swap" rel="stylesheet" />
-
-        <script type="module" src="/main.js"></script>
+        <script type="module" src="./main.js"></script>
         <title>CubeShop - Rubik's Cubes & Puzzles</title>
     </head>
     <body>
         <div class="container">
             <app-header active-page="home"></app-header>
-            <div class="content"></div>
+            <div class="content">
+                <!-- Button container will be created by FilterManager -->
+                <div class="button-container"></div>
+                <!-- Products will be dynamically loaded here -->
+            </div>
             <app-footer></app-footer>
         </div>
     </body>

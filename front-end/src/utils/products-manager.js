@@ -3,22 +3,28 @@ import { produits } from "../../data/products.js";
 const STORAGE_KEY = "cubeshop-products";
 
 export class ProductsManager {
-    static getAllProducts() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) {
-            // Initialize with default products if not found
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(produits));
-            return [...produits];
-        }
-        return JSON.parse(stored);
+    constructor() {
+        this.initializeStorage();
     }
 
-    static getProductById(id) {
+    initializeStorage() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(produits));
+        }
+    }
+
+    getAllProducts() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [...produits];
+    }
+
+    getProductById(id) {
         const products = this.getAllProducts();
         return products.find((product) => product.id === parseInt(id));
     }
 
-    static addProduct(productData) {
+    addProduct(productData) {
         const products = this.getAllProducts();
         const newProduct = {
             ...productData,
@@ -26,12 +32,12 @@ export class ProductsManager {
             prix: parseFloat(productData.prix).toFixed(2),
         };
 
-        products.unshift(newProduct); // Add at beginning
+        products.unshift(newProduct);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
         return newProduct;
     }
 
-    static updateProduct(id, productData) {
+    updateProduct(id, productData) {
         const products = this.getAllProducts();
         const index = products.findIndex((product) => product.id === parseInt(id));
 
@@ -39,7 +45,7 @@ export class ProductsManager {
             products[index] = {
                 ...products[index],
                 ...productData,
-                id: parseInt(id), // Keep original ID
+                id: parseInt(id),
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
             return products[index];
@@ -47,14 +53,14 @@ export class ProductsManager {
         return null;
     }
 
-    static deleteProduct(id) {
+    deleteProduct(id) {
         const products = this.getAllProducts();
         const filteredProducts = products.filter((product) => product.id !== parseInt(id));
         localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredProducts));
         return filteredProducts.length < products.length;
     }
 
-    static resetToDefault() {
+    resetToDefault() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(produits));
         return [...produits];
     }

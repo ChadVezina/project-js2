@@ -9,9 +9,9 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: resolve(__dirname, "src/index.html"),
-                form: resolve(__dirname, "src/form/form.html"),
-                produit: resolve(__dirname, "src/produit/produit.html"),
-                auth: resolve(__dirname, "src/auth/auth.html"),
+                form: resolve(__dirname, "src/pages/form/form.html"),
+                produit: resolve(__dirname, "src/pages/produit/produit.html"),
+                auth: resolve(__dirname, "src/pages/auth/auth.html"),
             },
         },
     },
