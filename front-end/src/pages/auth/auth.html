@@ -5,9 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Connexion | Inscription</title>
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&display=swap" rel="stylesheet" />
         <script type="module" defer src="./auth.js"></script>
     </head>
     <body>
+        <app-header active-page="auth"></app-header>
         <div class="content">
             <div class="auth">
                 <div class="auth__container">
@@ -88,7 +92,7 @@
                             <label class="auth__checkbox">
                                 <input type="checkbox" name="terms" required />
                                 <span class="auth__checkbox-custom"></span>
-                                <span>J'accepte les <a href="#" class="auth__link">conditions d'utilisation</a></span> 
+                                <span>J'accepte les <a href="#" class="auth__link">conditions d'utilisation</a></span>
                             </label>
                         </div>
 
@@ -97,5 +101,6 @@
                 </div>
             </div>
         </div>
+        <app-footer></app-footer>
     </body>
 </html>

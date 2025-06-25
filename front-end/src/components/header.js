@@ -10,13 +10,13 @@ class AppHeader extends HTMLElement {
                 <a class="header-brand" href="/">CubeShop</a>
                 <ul>
                     <li>
-                        <a href="../index.html" class="header-nav ${activePage === "home" ? "active" : ""}">Accueil</a>
+                        <a href="/" class="header-nav ${activePage === "home" ? "active" : ""}">Accueil</a>
                     </li>
                     <li>
-                        <a href="../pages/form/form.html" class="header-nav ${activePage === "form" ? "active" : ""}">Ajouter un produit</a>
+                        <a href="/pages/form/form.html" class="header-nav ${activePage === "form" ? "active" : ""}">Ajouter un produit</a>
                     </li>
                     <li>
-                        <a href="../pages/auth/auth.html" class="header-nav ${activePage === "auth" ? "active" : ""}">Connexion</a>
+                        <a href="/pages/auth/auth.html" class="header-nav ${activePage === "auth" ? "active" : ""}">Connexion</a>
                     </li>
                 </ul>
             </header>

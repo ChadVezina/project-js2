@@ -12,17 +12,7 @@
     </head>
     <body>
         <div class="container">
-            <header>
-                <a class="header-brand" href="/">CubeShop</a>
-                <ul>
-                    <li>
-                        <a href="../index.html" class="header-nav">Accueil</a>
-                    </li>
-                    <li>
-                        <a href="./form.html" class="header-nav active">Ajouter un produit</a>
-                    </li>
-                </ul>
-            </header>
+            <app-header active-page="form"></app-header>
             <div class="content">
                 <form novalidate>
                     <h2 class="title-underline">Ajouter un cube/puzzle</h2>
@@ -63,7 +53,7 @@
                     </div>
                 </form>
             </div>
-            <footer>© CubeShop - Your Speedcubing Store</footer>
+            <app-footer></app-footer>
         </div>
     </body>
 </html>
