@@ -1,6 +1,6 @@
 # CubeShop Frontend
 
-Interface utilisateur moderne pour CubeShop - une application de commerce électronique spécialisée dans les cubes de Rubik et puzzles.
+Interface utilisateur moderne pour CubeShop - une application de commerce électronique spécialisée dans les cubes Rubik et puzzles.
 
 ## Technologies
 
@@ -124,7 +124,7 @@ npm run preview
 - **Système de grille** flexible
 - **Composants réutilisables** (boutons, cartes, formulaires)
 - **Animations et transitions** fluides
-- **Thème cohérent** inspiré des cubes de Rubik
+- **Thème cohérent** inspiré des cubes Rubik
 
 ## Classes Principales
 
