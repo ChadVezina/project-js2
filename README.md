@@ -115,7 +115,7 @@ npm start
 - ✅ **Système d'événements** inter-composants
 - ✅ **Design system** cohérent
 
-Pour plus de détails : [`front-end/README.md`](front-end/README.md)
+Pour plus de détails : [`front-end/readme.md`](front-end/readme.md)
 
 ## 🔧 Backend
 
