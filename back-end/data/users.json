@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "email": "admin@cubeshop.com",
+        "password": "admin123",
+        "firstName": "Admin",
+        "lastName": "User",
+        "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+        "id": 2,
+        "username": "johndoe",
+        "email": "john.doe@example.com",
+        "password": "password123",
+        "firstName": "John",
+        "lastName": "Doe",
+        "createdAt": "2024-01-15T10:30:00.000Z"
+    },
+    {
+        "id": 3,
+        "username": "speedcuber",
+        "email": "speedcuber@example.com",
+        "password": "cubing2024",
+        "firstName": "Alex",
+        "lastName": "Smith",
+        "createdAt": "2024-02-01T14:20:00.000Z"
+    }
+]
