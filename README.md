@@ -92,11 +92,13 @@ L'application démarre sur `http://localhost:5173`
 
 ### Backend
 - **[README Backend](back-end/README.md)** - Documentation complète de l'API
-- **[Architecture Backend](back-end/ARCHITECTURE.md)** - Structure et organisation du code
 - **Tests disponibles** - `test-api.js`, `test-login.js`, `test-privileges.js`
 
 ### Frontend
 - **[README Frontend](front-end/README.md)** - Documentation complète de l'interface
+
+### Architecture
+- **[Architecture](back-end/ARCHITECTURE.md)** - Structure et organisation du code
 
 ## 🔐 Authentification et comptes de test
 

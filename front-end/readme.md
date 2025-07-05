@@ -47,50 +47,8 @@ Interface utilisateur moderne pour CubeShop - une application de commerce élect
 
 L'application utilise une architecture modulaire basée sur des classes ES6 et des Web Components :
 
-```
-front-end/
-├── src/
-│   ├── index.html              # Page d'accueil
-│   ├── main.js                 # Point d'entrée principal
-│   ├── main.scss              # Styles de la page d'accueil
-│   ├── assets/
-│   │   └── styles/            # Système de styles modulaire
-│   │       ├── styles.scss    # Styles principaux
-│   │       ├── api-states.scss # Styles pour états API
-│   │       └── partials/      # Modules SCSS
-│   ├── classes/               # Classes JavaScript principales
-│   │   ├── CubeShopApp.js    # Application principale
-│   │   ├── ProductGrid.js    # Grille de produits
-│   │   ├── FilterManager.js  # Gestion des filtres
-│   │   ├── FormManager.js    # Gestion des formulaires
-│   │   ├── FormValidator.js  # Validation de formulaires
-│   │   ├── AuthManager.js    # Authentification
-│   │   ├── ProductPage.js    # Page produit détaillée
-│   │   ├── PaginationManager.js # Gestion de la pagination
-│   │   ├── BackendSimulator.js  # Simulation backend
-│   │   └── ...
-│   ├── components/           # Web Components réutilisables
-│   │   ├── header.js        # En-tête de navigation
-│   │   └── footer.js        # Pied de page
-│   ├── pages/               # Pages de l'application
-│   │   ├── form/           # Page d'ajout de produit
-│   │   ├── produit/        # Page détail produit
-│   │   └── auth/           # Page d'authentification
-│   ├── services/           # Services API
-│   │   └── apiService.js   # Service API centralisé
-│   └── utils/              # Utilitaires
-│       ├── products-manager.js      # Gestion des produits
-│       ├── page-initializer.js      # Initialisation des pages
-│       ├── event-emitter.js         # Système d'événements
-│       ├── api-connection-manager.js # Gestion connexion API
-│       └── auth-guard.js           # Protection des routes
-├── config/
-│   └── config.js           # Configuration générale
-├── data/
-│   └── products.js         # Données de démonstration
-├── vite.config.js         # Configuration Vite
-└── package.json
-```
+- **[Architecture](../back-end/ARCHITECTURE.md)** - Structure et organisation du code
+
 
 ## Installation
 
