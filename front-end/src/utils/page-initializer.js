@@ -1,8 +1,11 @@
 export class PageInitializer {
     static async initializePage(PageClass, options = {}) {
         try {
-            
+            // Ensure DOM is ready before proceeding
             await this.waitForDOM();
+            
+            // Add longer delay to ensure all elements are rendered
+            await new Promise(resolve => setTimeout(resolve, 150));
 
             const page = new PageClass(options);
 

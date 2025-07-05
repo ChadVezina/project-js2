@@ -1,67 +1,105 @@
-import { produits } from "../../data/products.js";
-
-const STORAGE_KEY = "cubeshop-products";
+import { apiService } from "../services/apiService.js";
 
 export class ProductsManager {
     constructor() {
-        this.initializeStorage();
+        this.cache = new Map();
+        this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
     }
 
-    initializeStorage() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(produits));
+    async getAllProducts() {
+        const cacheKey = "all_products";
+        const cached = this.cache.get(cacheKey);
+
+        if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+            return cached.data;
+        }
+
+        try {
+            const response = await apiService.getAllProducts();
+            const products = response.data || response;
+
+            this.cache.set(cacheKey, {
+                data: products,
+                timestamp: Date.now(),
+            });
+
+            return products;
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            // Return cached data if available, otherwise empty array
+            return cached ? cached.data : [];
         }
     }
 
-    getAllProducts() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [...produits];
-    }
+    async getProductById(id) {
+        const cacheKey = `product_${id}`;
+        const cached = this.cache.get(cacheKey);
 
-    getProductById(id) {
-        const products = this.getAllProducts();
-        return products.find((product) => product.id === parseInt(id));
-    }
-
-    addProduct(productData) {
-        const products = this.getAllProducts();
-        const newProduct = {
-            ...productData,
-            id: Date.now(),
-            prix: parseFloat(productData.prix).toFixed(2),
-        };
-
-        products.unshift(newProduct);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-        return newProduct;
-    }
-
-    updateProduct(id, productData) {
-        const products = this.getAllProducts();
-        const index = products.findIndex((product) => product.id === parseInt(id));
-
-        if (index !== -1) {
-            products[index] = {
-                ...products[index],
-                ...productData,
-                id: parseInt(id),
-            };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-            return products[index];
+        if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+            return cached.data;
         }
-        return null;
+
+        try {
+            const response = await apiService.getProductById(id);
+            const product = response.data || response;
+
+            this.cache.set(cacheKey, {
+                data: product,
+                timestamp: Date.now(),
+            });
+
+            return product;
+        } catch (error) {
+            console.error("Error fetching product:", error);
+            return null;
+        }
     }
 
-    deleteProduct(id) {
-        const products = this.getAllProducts();
-        const filteredProducts = products.filter((product) => product.id !== parseInt(id));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredProducts));
-        return filteredProducts.length < products.length;
+    async addProduct(productData) {
+        try {
+            const response = await apiService.createProduct(productData);
+            const newProduct = response.data || response;
+
+            // Clear cache to force refresh
+            this.cache.clear();
+
+            return newProduct;
+        } catch (error) {
+            console.error("Error creating product:", error);
+            throw error;
+        }
     }
 
-    resetToDefault() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(produits));
-        return [...produits];
+    async updateProduct(id, productData) {
+        try {
+            const response = await apiService.updateProduct(id, productData);
+            const updatedProduct = response.data || response;
+
+            // Clear cache to force refresh
+            this.cache.clear();
+
+            return updatedProduct;
+        } catch (error) {
+            console.error("Error updating product:", error);
+            throw error;
+        }
+    }
+
+    async deleteProduct(id) {
+        try {
+            await apiService.deleteProduct(id);
+
+            // Clear cache to force refresh
+            this.cache.clear();
+
+            return true;
+        } catch (error) {
+            console.error("Error deleting product:", error);
+            throw error;
+        }
+    }
+
+    clearCache() {
+        this.cache.clear();
     }
 }

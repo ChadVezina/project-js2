@@ -10,13 +10,15 @@ export class CubeShopApp {
         this.filterManager = null;
         this.paginationManager = null;
         this.currentFilter = null;
+        this.allProducts = [];
+        this.isLoading = false;
         this.init();
     }
 
-    init() {
+    async init() {
         this.setupComponents();
         this.bindEvents();
-        this.loadInitialProducts();
+        await this.loadInitialProducts();
     }
 
     setupComponents() {
@@ -53,11 +55,24 @@ export class CubeShopApp {
         });
     }
 
-    loadInitialProducts() {
-        const products = this.productsManager.getAllProducts();
-        this.productGrid.render(products.slice(0, 6));
-        this.filterManager.updateBrands(products);
-        this.paginationManager.updateState(6, products.length);
+    async loadInitialProducts() {
+        if (this.isLoading) return;
+        
+        this.isLoading = true;
+        this.showLoading();
+
+        try {
+            this.allProducts = await this.productsManager.getAllProducts();
+            this.productGrid.render(this.allProducts.slice(0, 6));
+            this.filterManager.updateBrands(this.allProducts);
+            this.paginationManager.updateState(6, this.allProducts.length);
+        } catch (error) {
+            console.error('Error loading products:', error);
+            this.showError('Failed to load products. Please try again.');
+        } finally {
+            this.hideLoading();
+            this.isLoading = false;
+        }
     }
 
     handleFilterChange(filterData) {
@@ -77,14 +92,64 @@ export class CubeShopApp {
     }
 
     getFilteredProducts() {
-        const allProducts = this.productsManager.getAllProducts();
         if (!this.currentFilter || !this.currentFilter.brand) {
-            return allProducts;
+            return this.allProducts;
         }
-        return allProducts.filter((product) => product.marque === this.currentFilter.brand);
+        return this.allProducts.filter((product) => product.marque === this.currentFilter.brand);
     }
 
-    refreshProducts() {
-        this.loadInitialProducts();
+    async refreshProducts() {
+        this.productsManager.clearCache();
+        await this.loadInitialProducts();
+    }
+
+    showLoading() {
+        const contentDiv = document.querySelector(".content");
+        let loadingDiv = contentDiv.querySelector(".loading-message");
+        
+        if (!loadingDiv) {
+            loadingDiv = document.createElement("div");
+            loadingDiv.className = "loading-message";
+            loadingDiv.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading products...</p>
+                </div>
+            `;
+            contentDiv.appendChild(loadingDiv);
+        }
+        
+        loadingDiv.style.display = "block";
+    }
+
+    hideLoading() {
+        const loadingDiv = document.querySelector(".loading-message");
+        if (loadingDiv) {
+            loadingDiv.style.display = "none";
+        }
+    }
+
+    showError(message) {
+        const contentDiv = document.querySelector(".content");
+        let errorDiv = contentDiv.querySelector(".error-message");
+        
+        if (!errorDiv) {
+            errorDiv = document.createElement("div");
+            errorDiv.className = "error-message";
+            contentDiv.appendChild(errorDiv);
+        }
+        
+        errorDiv.innerHTML = `
+            <div class="error-content">
+                <p>${message}</p>
+                <button class="retry-button" onclick="window.location.reload()">Retry</button>
+            </div>
+        `;
+        errorDiv.style.display = "block";
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            errorDiv.style.display = "none";
+        }, 5000);
     }
 }

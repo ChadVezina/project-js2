@@ -6,7 +6,6 @@
     align-items: center;
     min-height: 100vh;
     padding: 2rem;
-    
 }
 
 .auth {
@@ -167,6 +166,25 @@
 
             &:focus {
                 box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+            }
+        }
+    }
+
+    &__input {
+        &[type="select"],
+        select 
+            & {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><polyline points='6,9 12,15 18,9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            cursor: pointer;
+
+            &:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
             }
         }
     }

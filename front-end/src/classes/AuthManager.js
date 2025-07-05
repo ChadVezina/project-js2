@@ -1,3 +1,5 @@
+import { apiService } from "../services/apiService.js";
+
 export class AuthManager {
     constructor(options = {}) {
         this.currentTab = "login";
@@ -28,6 +30,11 @@ export class AuthManager {
         inputs.forEach((input) => {
             input.addEventListener("blur", () => this.validateField(input));
             input.addEventListener("input", () => this.clearFieldError(input));
+            
+            // Add change event for select elements
+            if (input.tagName === "SELECT") {
+                input.addEventListener("change", () => this.validateField(input));
+            }
         });
     }
 
@@ -71,10 +78,28 @@ export class AuthManager {
                 }
                 break;
 
+            case "username":
+                if (value.length < 3) {
+                    errors.push("Le nom d'utilisateur doit contenir au moins 3 caractères");
+                }
+                if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+                    errors.push("Le nom d'utilisateur ne peut contenir que des lettres, chiffres et underscore");
+                }
+                break;
+
             case "email":
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(value)) {
                     errors.push("Veuillez entrer un email valide");
+                }
+                break;
+
+            case "role":
+                if (!value) {
+                    errors.push("Veuillez sélectionner un rôle");
+                }
+                if (value && !["user", "admin"].includes(value)) {
+                    errors.push("Le rôle doit être 'user' ou 'admin'");
                 }
                 break;
 
@@ -167,51 +192,80 @@ export class AuthManager {
         return isValid;
     }
 
-    handleLogin(e) {
+    async handleLogin(e) {
         e.preventDefault();
         const form = e.target;
 
         if (this.validateForm(form)) {
             const formData = new FormData(form);
             const credentials = {
-                email: formData.get("email"),
+                username: formData.get("username"),
                 password: formData.get("password"),
-                remember: formData.get("remember") === "on",
+                rememberMe: formData.get("remember") === "on",
             };
 
             this.showLoadingState(form);
 
-            setTimeout(() => {
+            try {
+                const response = await apiService.login(credentials);
+
                 this.hideLoadingState(form);
-                console.log("Login successful:", credentials);
+                console.log("Login successful:", response);
+
+                // Store user info AND token
+                if (response.data && response.data.user) {
+                    localStorage.setItem("currentUser", JSON.stringify(response.data.user));
+                }
+                
+                // Make sure token is also stored if available
+                if (response.data && response.data.token) {
+                    localStorage.setItem("authToken", response.data.token);
+                }
+
                 alert("Connexion réussie! Redirection...");
-                window.location.href = "../index.html";
-            }, 1500);
+                
+                // Trigger a custom event to notify header about login
+                window.dispatchEvent(new CustomEvent('userLoggedIn', {
+                    detail: { user: response.data.user }
+                }));
+                
+                window.location.href = "../../index.html";
+            } catch (error) {
+                this.hideLoadingState(form);
+                console.error("Login failed:", error);
+                alert("Erreur de connexion: " + error.message);
+            }
         }
     }
 
-    handleRegister(e) {
+    async handleRegister(e) {
         e.preventDefault();
         const form = e.target;
 
         if (this.validateForm(form)) {
             const formData = new FormData(form);
             const userData = {
-                name: formData.get("name"),
+                username: formData.get("username"),
                 email: formData.get("email"),
                 password: formData.get("password"),
+                role: formData.get("role")
             };
 
-            // Simulate registration process
             this.showLoadingState(form);
 
-            setTimeout(() => {
+            try {
+                const response = await apiService.register(userData);
+
                 this.hideLoadingState(form);
-                console.log("Registration successful:", userData);
+                console.log("Registration successful:", response);
                 alert("Inscription réussie! Vous pouvez maintenant vous connecter.");
                 this.switchTab("login");
                 form.reset();
-            }, 1500);
+            } catch (error) {
+                this.hideLoadingState(form);
+                console.error("Registration failed:", error);
+                alert("Erreur d'inscription: " + error.message);
+            }
         }
     }
 

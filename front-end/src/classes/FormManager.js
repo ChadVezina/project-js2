@@ -1,31 +1,49 @@
 import { EventEmitter } from "../utils/event-emitter.js";
 import { FormValidator } from "./FormValidator.js";
-import { BackendSimulator } from "./BackendSimulator.js";
+import { ProductService } from "./ProductService.js";
 
 export class FormManager extends EventEmitter {
-    constructor(formElement, options = {}) {
+    constructor(options = {}) {
         super();
-        this.form = formElement;
+        this.form = null; // Will be set in init()
         this.validator = new FormValidator();
         this.isSubmitting = false;
         this.options = options;
-
-        if (formElement) {
-            this.init();
-        }
     }
 
     async init() {
+        // Wait for DOM to be ready
+        await this.waitForDOM();
+
+        // Add additional delay to ensure form is fully rendered
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        // Find the form element
+        this.form = document.querySelector("form");
+
         if (!this.form) {
-            this.form = document.querySelector("form");
-            if (!this.form) {
-                throw new Error("Form element not found");
-            }
+            throw new Error("Form element not found");
+        }
+
+        // Verify that form is a valid DOM element
+        if (!this.form || typeof this.form.addEventListener !== "function") {
+            console.error("Form element is not valid:", this.form);
+            throw new Error("Form element is not a valid DOM element");
         }
 
         this.bindEvents();
         this.setupRealTimeValidation();
         this.addRequiredAttributes();
+    }
+
+    waitForDOM() {
+        return new Promise((resolve) => {
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", resolve, { once: true });
+            } else {
+                resolve();
+            }
+        });
     }
 
     addRequiredAttributes() {
@@ -98,7 +116,7 @@ export class FormManager extends EventEmitter {
             this.isSubmitting = true;
             this.showLoadingState();
 
-            // Simulate backend submission (no actual storage)
+            // Submit to backend via ProductService
             const response = await this.submitToBackend(productData);
             this.handleSuccess(response);
         } catch (error) {
@@ -121,13 +139,13 @@ export class FormManager extends EventEmitter {
 
         // Optional: Validate image URL before submission
         try {
-            await BackendSimulator.checkImageUrl(backendData.image);
+            await ProductService.checkImageUrl(backendData.image);
         } catch (imageError) {
             throw new Error(`Image validation failed: ${imageError.message}`);
         }
 
-        // Submit to simulated backend
-        return await BackendSimulator.submitProduct(backendData);
+        // Submit to backend
+        return await ProductService.submitProduct(backendData);
     }
 
     handleSuccess(response) {
@@ -139,7 +157,7 @@ export class FormManager extends EventEmitter {
             const shouldRedirect = confirm("Produit soumis avec succès! Il sera affiché après approbation.\n\nVoulez-vous retourner à l'accueil?");
 
             if (shouldRedirect) {
-                window.location.href = "../index.html";
+                window.location.href = "../../index.html";
             }
         }, 2500);
     }
@@ -182,7 +200,7 @@ export class FormManager extends EventEmitter {
         if (confirm("Êtes-vous sûr de vouloir annuler? Toutes les données saisies seront perdues.")) {
             this.form.reset();
             this.validator.clearAllErrors();
-            window.location.href = "../index.html";
+            window.location.href = "../../index.html";
         }
     }
 
@@ -213,7 +231,7 @@ export class FormManager extends EventEmitter {
                 <div class="form__success-details">
                     <span class="form__success-text">Produit soumis avec succès!</span>
                     <small class="form__success-subtext">
-                        ID: ${response.data.id} | Status: En attente d'approbation
+                        ID: ${response.data?.id || 'N/A'} | Status: En attente d'approbation
                     </small>
                 </div>
             </div>

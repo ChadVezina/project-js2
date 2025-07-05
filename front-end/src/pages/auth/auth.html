@@ -25,9 +25,9 @@
 
                     <form class="auth__form auth__form--login" id="loginForm">
                         <div class="auth__form-group">
-                            <label class="auth__label" for="loginEmail">Email</label>
-                            <input class="auth__input" type="email" id="loginEmail" name="email" placeholder="votre@email.com" required />
-                            <span class="auth__error" data-field="email"></span>
+                            <label class="auth__label" for="loginUsername">Nom d'utilisateur</label>
+                            <input class="auth__input" type="text" id="loginUsername" name="username" placeholder="Votre nom d'utilisateur" required />
+                            <span class="auth__error" data-field="username"></span>
                         </div>
 
                         <div class="auth__form-group">
@@ -51,15 +51,25 @@
                     <!-- Register Form -->
                     <form class="auth__form auth__form--register auth__form--hidden" id="registerForm">
                         <div class="auth__form-group">
-                            <label class="auth__label" for="registerName">Nom complet</label>
-                            <input class="auth__input" type="text" id="registerName" name="name" placeholder="Jean Dupont" required />
-                            <span class="auth__error" data-field="name"></span>
+                            <label class="auth__label" for="registerUsername">Nom d'utilisateur</label>
+                            <input class="auth__input" type="text" id="registerUsername" name="username" placeholder="Votre nom d'utilisateur" required />
+                            <span class="auth__error" data-field="username"></span>
                         </div>
 
                         <div class="auth__form-group">
                             <label class="auth__label" for="registerEmail">Email</label>
                             <input class="auth__input" type="email" id="registerEmail" name="email" placeholder="votre@email.com" required />
                             <span class="auth__error" data-field="email"></span>
+                        </div>
+
+                        <div class="auth__form-group">
+                            <label class="auth__label" for="registerRole">Rôle</label>
+                            <select class="auth__input" id="registerRole" name="role" required>
+                                <option value="">Choisir un rôle</option>
+                                <option value="user">Utilisateur</option>
+                                <option value="admin">Administrateur</option>
+                            </select>
+                            <span class="auth__error" data-field="role"></span>
                         </div>
 
                         <div class="auth__form-group">
