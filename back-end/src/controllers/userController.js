@@ -2,6 +2,38 @@ import User from "../models/User.js";
 
 const userModel = new User();
 
+// Contrôleur pour l'authentification
+export const login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Nom d'utilisateur et mot de passe requis",
+            });
+        }
+
+        const user = await userModel.authenticate(username, password);
+
+        res.json({
+            success: true,
+            message: "Connexion réussie",
+            data: {
+                user,
+                // En production, retourner un token JWT
+                token: `mock-token-${user.id}`,
+                role: user.role,
+            },
+        });
+    } catch (error) {
+        res.status(401).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 export const getAllUsers = async (req, res) => {
     try {
         const users = await userModel.getAll();
@@ -123,3 +155,56 @@ export const deleteUser = async (req, res) => {
         });
     }
 };
+
+// Contrôleur pour l'inscription publique
+export const register = async (req, res) => {
+    try {
+        const { username, email, password, role } = req.body;
+
+        // Validation des données
+        if (!username || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Les champs nom d'utilisateur, email et mot de passe sont obligatoires",
+            });
+        }
+
+        // Pour l'inscription publique, permettre la création d'admin et user
+        let userRole = role || "user"; // Default to user if no role specified
+        
+        // Validate role
+        if (!["user", "admin"].includes(userRole)) {
+            userRole = "user"; // Default to user for invalid roles
+        }
+
+        const userData = {
+            username,
+            email,
+            password,
+            role: userRole
+        };
+
+        const createdUser = await userModel.create(userData);
+
+        res.status(201).json({
+            success: true,
+            message: "Compte créé avec succès",
+            data: createdUser,
+        });
+    } catch (error) {
+        if (error.message.includes("obligatoires") || error.message.includes("déjà utilisé") || error.message.includes("déjà pris")) {
+            return res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "Erreur lors de la création du compte",
+            error: error.message,
+        });
+    }
+};
+
+

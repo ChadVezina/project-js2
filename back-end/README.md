@@ -1,6 +1,6 @@
 # CubeShop Backend API
 
-Backend Express.js pour l'application CubeShop avec gestion des produits et utilisateurs via JSONArrayDatabase.
+Backend Express.js pour l'application CubeShop avec gestion des produits et utilisateurs via JSONArrayDatabase. Ce backend inclut un système d'authentification et d'autorisation complet avec gestion des rôles.
 
 ## Architecture
 
@@ -25,28 +25,80 @@ npm start
 
 Le serveur démarre par défaut sur http://localhost:3000
 
+## Système d'authentification
+
+Le backend utilise un système d'authentification par headers simulé avec gestion des rôles :
+
+-   **Rôles disponibles** : `admin`, `user`
+-   **Authentification** : Via headers `user-id` et `user-role`
+-   **Permissions** : Contrôle d'accès basé sur les rôles
+-   **Sécurité** : Validation des données et gestion des erreurs
+
 ## Endpoints API
 
 ### Base
 
 -   `GET /api` - Informations sur l'API et documentation des endpoints
+-   `GET /api/health` - Vérification de l'état de santé de l'API
+
+### Authentification
+
+#### Connexion
+
+-   **POST** `/api/users/login`
+-   **Body**:
+
+```json
+{
+    "username": "nom_utilisateur",
+    "password": "mot_de_passe"
+}
+```
+
+-   **Réponse**: Données utilisateur, token d'authentification et rôle
+
+#### Inscription
+
+-   **POST** `/api/users/register`
+-   **Body**:
+
+```json
+{
+    "username": "nom_utilisateur",
+    "email": "email@example.com",
+    "password": "mot_de_passe",
+    "role": "user" // ou "admin"
+}
+```
+
+-   **Réponse**: Confirmation de création du compte
+
+#### Vérification d'authentification
+
+-   **GET** `/api/users/auth/verify`
+-   **Headers**: `user-id` et `user-role` requis
+-   **Réponse**: Validation du token et informations utilisateur
 
 ### Produits
 
 #### Récupérer tous les produits
 
 -   **GET** `/api/products`
+-   **Accès**: Public
 -   **Réponse**: Liste de tous les produits
 
 #### Récupérer un produit par ID
 
 -   **GET** `/api/products/:id`
+-   **Accès**: Public
 -   **Paramètres**: `id` (integer) - ID du produit
 -   **Réponse**: Détails du produit
 
 #### Créer un nouveau produit
 
 -   **POST** `/api/products`
+-   **Accès**: Administrateur uniquement
+-   **Headers**: `user-id` et `user-role` requis
 -   **Body**:
 
 ```json
@@ -62,12 +114,16 @@ Le serveur démarre par défaut sur http://localhost:3000
 #### Modifier un produit
 
 -   **PUT** `/api/products/:id`
+-   **Accès**: Administrateur uniquement
+-   **Headers**: `user-id` et `user-role` requis
 -   **Paramètres**: `id` (integer) - ID du produit
 -   **Body**: Mêmes champs que pour la création (tous optionnels)
 
 #### Supprimer un produit
 
 -   **DELETE** `/api/products/:id`
+-   **Accès**: Administrateur uniquement
+-   **Headers**: `user-id` et `user-role` requis
 -   **Paramètres**: `id` (integer) - ID du produit
 
 ### Utilisateurs
@@ -75,17 +131,23 @@ Le serveur démarre par défaut sur http://localhost:3000
 #### Récupérer tous les utilisateurs
 
 -   **GET** `/api/users`
+-   **Accès**: Utilisateurs authentifiés (lecture)
+-   **Headers**: `user-id` et `user-role` requis
 -   **Réponse**: Liste de tous les utilisateurs (sans mots de passe)
 
 #### Récupérer un utilisateur par ID
 
 -   **GET** `/api/users/:id`
+-   **Accès**: Utilisateur lui-même ou administrateur
+-   **Headers**: `user-id` et `user-role` requis
 -   **Paramètres**: `id` (integer) - ID de l'utilisateur
 -   **Réponse**: Détails de l'utilisateur (sans mot de passe)
 
-#### Créer un nouvel utilisateur
+#### Créer un nouvel utilisateur (Administration)
 
 -   **POST** `/api/users`
+-   **Accès**: Administrateur uniquement
+-   **Headers**: `user-id` et `user-role` requis
 -   **Body**:
 
 ```json
@@ -94,20 +156,67 @@ Le serveur démarre par défaut sur http://localhost:3000
     "email": "email@example.com",
     "password": "mot_de_passe",
     "firstName": "Prénom (optionnel)",
-    "lastName": "Nom (optionnel)"
+    "lastName": "Nom (optionnel)",
+    "role": "user" // ou "admin"
 }
 ```
 
 #### Modifier un utilisateur
 
 -   **PUT** `/api/users/:id`
+-   **Accès**: Administrateur uniquement
+-   **Headers**: `user-id` et `user-role` requis
 -   **Paramètres**: `id` (integer) - ID de l'utilisateur
 -   **Body**: Mêmes champs que pour la création (tous optionnels)
 
 #### Supprimer un utilisateur
 
 -   **DELETE** `/api/users/:id`
+-   **Accès**: Administrateur uniquement
+-   **Headers**: `user-id` et `user-role` requis
 -   **Paramètres**: `id` (integer) - ID de l'utilisateur
+
+## Système de permissions
+
+### Rôles et accès
+
+-   **Administrateur (`admin`)**:
+
+    -   Accès complet à tous les endpoints
+    -   Création, modification et suppression de produits
+    -   Création, modification et suppression d'utilisateurs
+    -   Lecture de tous les utilisateurs
+
+-   **Utilisateur (`user`)**:
+    -   Lecture des produits (accès public)
+    -   Lecture de tous les utilisateurs (authentifié)
+    -   Accès à ses propres données utilisateur uniquement
+
+### Middleware d'authentification
+
+-   **`authenticate`**: Vérifie la présence des headers `user-id` et `user-role`
+-   **`requireAdmin`**: Nécessite le rôle administrateur
+-   **`requireReadAccess`**: Nécessite une authentification (tous les utilisateurs)
+-   **`requireSelfOrAdmin`**: Accès à ses propres données ou administrateur
+-   **`requireWriteAccess`**: Nécessite le rôle administrateur pour écriture
+
+## Comptes de test
+
+Le système inclut des comptes de test préconfigurés :
+
+### Administrateur
+
+-   **Username**: `admin`
+-   **Email**: `admin@cubeshop.com`
+-   **Password**: `Admin123`
+-   **Role**: `admin`
+
+### Utilisateur standard
+
+-   **Username**: `johndoe`
+-   **Email**: `john.doe@example.com`
+-   **Password**: `password123`
+-   **Role**: `user`
 
 ## Format des réponses
 
@@ -168,5 +277,59 @@ Pour plus de détails sur l'architecture, voir [ARCHITECTURE.md](ARCHITECTURE.md
 -   **Morgan** - Logging des requêtes HTTP
 -   **CORS** - Gestion des requêtes cross-origin
 -   **Express.json()** - Parsing du JSON dans les requêtes
+-   **Middleware personnalisés** :
+    -   `authenticate` - Vérification de l'authentification
+    -   `requireAdmin` - Vérification des privilèges administrateur
+    -   `requireReadAccess` - Vérification d'accès en lecture
+    -   `requireSelfOrAdmin` - Vérification d'accès aux données personnelles
+    -   `asyncHandler` - Gestion des erreurs asynchrones
 
+## Tests
 
+Le backend inclut des scripts de test pour vérifier le fonctionnement :
+
+### Test de l'API
+
+```bash
+node test-api.js
+```
+
+### Test de connexion
+
+```bash
+node test-login.js
+```
+
+### Test des privilèges
+
+```bash
+node test-privileges.js
+```
+
+## Sécurité
+
+-   **Validation des données** : Validation côté serveur pour tous les endpoints
+-   **Gestion des erreurs** : Middleware centralisé pour la gestion des erreurs
+-   **Contrôle d'accès** : Système de permissions basé sur les rôles
+-   **Sanitisation** : Suppression des mots de passe dans les réponses
+-   **Validation des rôles** : Vérification des rôles valides (`admin`, `user`)
+
+## Développement
+
+### Structure MVC
+
+Le backend suit le pattern MVC avec :
+
+-   **Models** : Gestion des données et logique métier
+-   **Views** : Réponses JSON standardisées
+-   **Controllers** : Traitement des requêtes et coordination
+
+### Gestion des erreurs
+
+Format standardisé des erreurs avec codes HTTP appropriés :
+
+-   `400` : Erreur de validation
+-   `401` : Authentification requise
+-   `403` : Accès refusé (permissions insuffisantes)
+-   `404` : Ressource non trouvée
+-   `500` : Erreur interne du serveur

@@ -30,11 +30,16 @@ class User {
     }
 
     async create(userData) {
-        const { username, email, password, firstName, lastName } = userData;
+        const { username, email, password, firstName, lastName, role = "user" } = userData;
 
         // Validation des données
         if (!username || !email || !password) {
             throw new Error("Les champs username, email et password sont obligatoires");
+        }
+
+        // Validation du rôle
+        if (role && !["admin", "user"].includes(role)) {
+            throw new Error("Le rôle doit être 'admin' ou 'user'");
         }
 
         // Vérifier si l'email existe déjà
@@ -57,6 +62,7 @@ class User {
             password, // En production, hasher le mot de passe
             firstName: firstName || "",
             lastName: lastName || "",
+            role: role || "user",
             createdAt: new Date().toISOString(),
         };
 
@@ -75,7 +81,12 @@ class User {
             throw new Error("Utilisateur non trouvé");
         }
 
-        const { username, email, password, firstName, lastName } = userData;
+        const { username, email, password, firstName, lastName, role } = userData;
+
+        // Validation du rôle si fourni
+        if (role && !["admin", "user"].includes(role)) {
+            throw new Error("Le rôle doit être 'admin' ou 'user'");
+        }
 
         // Vérifier l'unicité de l'email et du username si modifiés
         if (email && email !== existingUser.email) {
@@ -101,6 +112,7 @@ class User {
             password: password || existingUser.password,
             firstName: firstName !== undefined ? firstName : existingUser.firstName,
             lastName: lastName !== undefined ? lastName : existingUser.lastName,
+            role: role || existingUser.role,
             updatedAt: new Date().toISOString(),
         };
 
@@ -108,6 +120,27 @@ class User {
 
         // Ne pas renvoyer le mot de passe
         const { password: _, ...safeUser } = updatedUser;
+        return safeUser;
+    }
+
+    async authenticate(username, password) {
+        // Reload data to get latest changes
+        const users = await this.db.getAll();
+        console.log("All users:", users);
+        
+        // Find user by username (exact match)
+        const user = users.find((u) => u.username === username && u.password === password);
+
+        if (!user) {
+            throw new Error("Nom d'utilisateur ou mot de passe incorrect");
+        }
+
+        console.log("Found user:", user);
+        // Ne pas renvoyer le mot de passe, but include the role
+        const { password: _, ...safeUser } = user;
+        // Ensure role is included (default to 'user' if not specified)
+        safeUser.role = safeUser.role || "user";
+        console.log("Safe user:", safeUser);
         return safeUser;
     }
 

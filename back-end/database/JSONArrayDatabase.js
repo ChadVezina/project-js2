@@ -47,6 +47,8 @@ export default class JSONArrayDatabase {
     }
 
     async getAll() {
+        // Reload data from file to get latest changes
+        await this.initialize();
         return [...this.data];
     }
 

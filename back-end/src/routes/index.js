@@ -24,8 +24,19 @@ router.get("/", (req, res) => {
                 create: "POST /api/users",
                 update: "PUT /api/users/:id",
                 delete: "DELETE /api/users/:id",
+                login: "POST /api/users/login",
+                register: "POST /api/users/register",
             },
         },
+    });
+});
+
+// Health check endpoint
+router.get("/health", (req, res) => {
+    res.json({
+        success: true,
+        message: "API is healthy",
+        timestamp: new Date().toISOString(),
     });
 });
 

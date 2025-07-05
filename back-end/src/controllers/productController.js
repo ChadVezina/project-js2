@@ -45,7 +45,9 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
+        console.log("Creating product with data:", req.body);
         const createdProduct = await productModel.create(req.body);
+        console.log("Product created successfully:", createdProduct);
 
         res.status(201).json({
             success: true,
@@ -53,6 +55,7 @@ export const createProduct = async (req, res) => {
             data: createdProduct,
         });
     } catch (error) {
+        console.error("Error creating product:", error);
         if (error.message.includes("obligatoires")) {
             return res.status(400).json({
                 success: false,
