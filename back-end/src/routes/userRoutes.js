@@ -1,5 +1,15 @@
 import express from "express";
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser, login, register } from "../controllers/userController.js";
+import {
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser,
+    login,
+    register,
+    verifyTokenEndpoint,
+    logout,
+} from "../controllers/userController.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
 import { authenticate, requireAdmin, requireSelfOrAdmin, requireReadAccess, verifyAuth } from "../middleware/authMiddleware.js";
 
@@ -10,6 +20,12 @@ router.post("/login", asyncHandler(login));
 
 // POST /api/users/register - Inscription publique (pas de middleware requis)
 router.post("/register", asyncHandler(register));
+
+// POST /api/users/logout - Déconnexion
+router.post("/logout", asyncHandler(logout));
+
+// GET /api/users/verify-token - Vérifier la validité du token
+router.get("/verify-token", authenticate, asyncHandler(verifyTokenEndpoint));
 
 // GET /api/users - Récupérer tous les utilisateurs (lecture seulement)
 router.get("/", authenticate, requireReadAccess, asyncHandler(getAllUsers));
@@ -26,7 +42,7 @@ router.put("/:id", authenticate, requireAdmin, asyncHandler(updateUser));
 // DELETE /api/users/:id - Supprimer un utilisateur (admin seulement)
 router.delete("/:id", authenticate, requireAdmin, asyncHandler(deleteUser));
 
-// GET /api/users/auth/verify - Vérifier l'authentification (middleware pour vérifier le token)
+// GET /api/users/auth/verify - Vérifier l'authentification (alternative à verify-token)
 router.get("/auth/verify", authenticate, verifyAuth);
 
 export default router;

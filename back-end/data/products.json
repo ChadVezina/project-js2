@@ -32,14 +32,6 @@
     "id": 1742627779
   },
   {
-    "nom": "X-Man Tornado V3 M",
-    "marque": "X-Man Design",
-    "image": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500",
-    "prix": "27.00",
-    "description": "Competition-ready 3x3 cube with magnetic positioning system. Features excellent stability and fast turning for professional speedcubing.",
-    "id": 1742627819
-  },
-  {
     "nom": "GAN 11 M Pro",
     "marque": "GAN",
     "image": "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500",
@@ -78,14 +70,6 @@
     "prix": "29.99",
     "description": "Magnetic pyraminx with GAN's signature smooth turning. Perfect for those looking to expand beyond traditional 3x3 solving.",
     "id": 1742628067
-  },
-  {
-    "nom": "MoYu Skewb",
-    "marque": "MoYu",
-    "image": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500",
-    "prix": "15.95",
-    "description": "High-quality skewb puzzle with smooth corner cutting and excellent stability. Great for beginners and advanced solvers alike.",
-    "id": 1742628109
   },
   {
     "nom": "X-Man Megaminx",

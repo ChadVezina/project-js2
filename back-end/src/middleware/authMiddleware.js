@@ -1,23 +1,27 @@
 import User from "../models/User.js";
+import { verifyToken, extractTokenFromHeader } from "../utils/jwtUtils.js";
 
 const userModel = new User();
 
 // Middleware pour vérifier l'authentification
 export const authenticate = async (req, res, next) => {
     try {
-        // Récupérer l'utilisateur depuis les headers (simulation d'authentification)
-        const userId = req.headers["user-id"];
-        const userRole = req.headers["user-role"];
+        // Récupérer le token depuis le header Authorization
+        const authHeader = req.headers.authorization;
+        const token = extractTokenFromHeader(authHeader);
 
-        if (!userId || !userRole) {
+        if (!token) {
             return res.status(401).json({
                 success: false,
-                message: "Authentification requise",
+                message: "Token d'authentification requis",
             });
         }
 
-        // Vérifier que l'utilisateur existe
-        const user = await userModel.getById(userId);
+        // Vérifier et décoder le token
+        const decoded = verifyToken(token);
+
+        // Vérifier que l'utilisateur existe toujours
+        const user = await userModel.getById(decoded.id);
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -27,8 +31,10 @@ export const authenticate = async (req, res, next) => {
 
         // Ajouter l'utilisateur au request pour les middlewares suivants
         req.user = {
-            id: parseInt(userId),
-            role: userRole,
+            id: decoded.id,
+            username: decoded.username,
+            email: decoded.email,
+            role: decoded.role,
             ...user,
         };
 
@@ -36,8 +42,7 @@ export const authenticate = async (req, res, next) => {
     } catch (error) {
         res.status(401).json({
             success: false,
-            message: "Erreur d'authentification",
-            error: error.message,
+            message: error.message,
         });
     }
 };

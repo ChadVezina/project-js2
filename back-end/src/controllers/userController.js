@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { generateToken } from "../utils/jwtUtils.js";
 
 const userModel = new User();
 
@@ -15,14 +16,16 @@ export const login = async (req, res) => {
         }
 
         const user = await userModel.authenticate(username, password);
+        
+        // Générer le token JWT
+        const token = generateToken(user);
 
         res.json({
             success: true,
             message: "Connexion réussie",
             data: {
                 user,
-                // En production, retourner un token JWT
-                token: `mock-token-${user.id}`,
+                token,
                 role: user.role,
             },
         });
@@ -156,55 +159,79 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-// Contrôleur pour l'inscription publique
+// Contrôleur pour l'enregistrement d'un nouvel utilisateur
 export const register = async (req, res) => {
     try {
-        const { username, email, password, role } = req.body;
+        const { username, email, password, firstName, lastName, role } = req.body;
 
-        // Validation des données
         if (!username || !email || !password) {
             return res.status(400).json({
                 success: false,
-                message: "Les champs nom d'utilisateur, email et mot de passe sont obligatoires",
+                message: "Nom d'utilisateur, email et mot de passe requis",
             });
         }
 
-        // Pour l'inscription publique, permettre la création d'admin et user
-        let userRole = role || "user"; // Default to user if no role specified
-        
-        // Validate role
-        if (!["user", "admin"].includes(userRole)) {
-            userRole = "user"; // Default to user for invalid roles
+        // Validation du format de l'email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                success: false,
+                message: "Format d'email invalide",
+            });
         }
 
-        const userData = {
+        // Validation de la force du mot de passe
+        if (password.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Le mot de passe doit contenir au moins 6 caractères",
+            });
+        }
+
+        const newUser = await userModel.create({
             username,
             email,
             password,
-            role: userRole
-        };
+            firstName,
+            lastName,
+            role: role || "user"
+        });
 
-        const createdUser = await userModel.create(userData);
+        // Générer le token JWT pour le nouvel utilisateur
+        const token = generateToken(newUser);
 
         res.status(201).json({
             success: true,
-            message: "Compte créé avec succès",
-            data: createdUser,
+            message: "Utilisateur créé avec succès",
+            data: {
+                user: newUser,
+                token,
+                role: newUser.role,
+            },
         });
     } catch (error) {
-        if (error.message.includes("obligatoires") || error.message.includes("déjà utilisé") || error.message.includes("déjà pris")) {
-            return res.status(400).json({
-                success: false,
-                message: error.message,
-            });
-        }
-
-        res.status(500).json({
+        res.status(400).json({
             success: false,
-            message: "Erreur lors de la création du compte",
-            error: error.message,
+            message: error.message,
         });
     }
+};
+
+export const verifyTokenEndpoint = async (req, res) => {
+    res.json({
+        success: true,
+        message: "Token valide",
+        data: {
+            user: req.user,
+        },
+    });
+};
+
+export const logout = async (req, res) => {
+    res.json({
+        success: true,
+        message: "Déconnexion réussie",
+    });
 };
 
 

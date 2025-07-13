@@ -1,6 +1,7 @@
 import JSONArrayDatabase from "../../database/JSONArrayDatabase.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { hashPassword, comparePassword } from "../utils/bcryptUtils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,11 +56,14 @@ class User {
             throw new Error("Ce nom d'utilisateur est déjà pris");
         }
 
+        // Hasher le mot de passe
+        const hashedPassword = await hashPassword(password);
+
         const newUser = {
             id: Date.now(),
             username,
             email,
-            password, // En production, hasher le mot de passe
+            password: hashedPassword,
             firstName: firstName || "",
             lastName: lastName || "",
             role: role || "user",
@@ -109,7 +113,7 @@ class User {
             ...existingUser,
             username: username || existingUser.username,
             email: email || existingUser.email,
-            password: password || existingUser.password,
+            password: password ? await hashPassword(password) : existingUser.password,
             firstName: firstName !== undefined ? firstName : existingUser.firstName,
             lastName: lastName !== undefined ? lastName : existingUser.lastName,
             role: role || existingUser.role,
@@ -128,10 +132,17 @@ class User {
         const users = await this.db.getAll();
         console.log("All users:", users);
         
-        // Find user by username (exact match)
-        const user = users.find((u) => u.username === username && u.password === password);
+        // Find user by username
+        const user = users.find((u) => u.username === username);
 
         if (!user) {
+            throw new Error("Nom d'utilisateur ou mot de passe incorrect");
+        }
+
+        // Vérifier le mot de passe avec bcrypt
+        const isPasswordValid = await comparePassword(password, user.password);
+        
+        if (!isPasswordValid) {
             throw new Error("Nom d'utilisateur ou mot de passe incorrect");
         }
 
