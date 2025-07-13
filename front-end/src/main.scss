@@ -118,6 +118,73 @@
             margin-left: 0.5rem;
         }
     }
+
+    // Styles pour le bouton supprimer sur les cartes produits
+    .delete-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: scale(0.8);
+        z-index: 10;
+        backdrop-filter: blur(10px);
+
+        &:hover {
+            background: rgba(220, 53, 69, 1);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    }
+
+    &:hover .delete-btn {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .product-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
 }
 
 // Cube grid pattern overlay for empty states
@@ -182,5 +249,43 @@
     .filter-wrapper {
         position: relative;
         display: inline-block;
+    }
+}
+
+// Notifications
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    color: white;
+    font-weight: var(--font-weight-medium);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 10000;
+    max-width: 350px;
+    box-shadow: var(--box-shadow-hover);
+
+    &.success {
+        background: linear-gradient(135deg, #28a745, #20c997);
+    }
+
+    &.error {
+        background: linear-gradient(135deg, #dc3545, #e83e8c);
+    }
+
+    &.show {
+        transform: translateX(0);
+    }
+}
+
+// Animation du spinner
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

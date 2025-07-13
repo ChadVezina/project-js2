@@ -2,10 +2,12 @@ import { ProductsManager } from "../utils/products-manager.js";
 import { ProductGrid } from "./ProductGrid.js";
 import { FilterManager } from "./FilterManager.js";
 import { PaginationManager } from "./PaginationManager.js";
+import { CartManager } from "./CartManager.js";
 
 export class CubeShopApp {
     constructor() {
         this.productsManager = new ProductsManager();
+        this.cartManager = new CartManager();
         this.productGrid = null;
         this.filterManager = null;
         this.paginationManager = null;
@@ -57,7 +59,7 @@ export class CubeShopApp {
 
     async loadInitialProducts() {
         if (this.isLoading) return;
-        
+
         this.isLoading = true;
         this.showLoading();
 
@@ -67,8 +69,8 @@ export class CubeShopApp {
             this.filterManager.updateBrands(this.allProducts);
             this.paginationManager.updateState(6, this.allProducts.length);
         } catch (error) {
-            console.error('Error loading products:', error);
-            this.showError('Failed to load products. Please try again.');
+            console.error("Error loading products:", error);
+            this.showError("Failed to load products. Please try again.");
         } finally {
             this.hideLoading();
             this.isLoading = false;
@@ -106,7 +108,7 @@ export class CubeShopApp {
     showLoading() {
         const contentDiv = document.querySelector(".content");
         let loadingDiv = contentDiv.querySelector(".loading-message");
-        
+
         if (!loadingDiv) {
             loadingDiv = document.createElement("div");
             loadingDiv.className = "loading-message";
@@ -118,7 +120,7 @@ export class CubeShopApp {
             `;
             contentDiv.appendChild(loadingDiv);
         }
-        
+
         loadingDiv.style.display = "block";
     }
 
@@ -132,13 +134,13 @@ export class CubeShopApp {
     showError(message) {
         const contentDiv = document.querySelector(".content");
         let errorDiv = contentDiv.querySelector(".error-message");
-        
+
         if (!errorDiv) {
             errorDiv = document.createElement("div");
             errorDiv.className = "error-message";
             contentDiv.appendChild(errorDiv);
         }
-        
+
         errorDiv.innerHTML = `
             <div class="error-content">
                 <p>${message}</p>
@@ -146,8 +148,7 @@ export class CubeShopApp {
             </div>
         `;
         errorDiv.style.display = "block";
-        
-        // Auto-hide after 5 seconds
+
         setTimeout(() => {
             errorDiv.style.display = "none";
         }, 5000);

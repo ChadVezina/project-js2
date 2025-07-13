@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mon Panier - CubeShop</title>
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <script type="module" src="./panier.js"></script>
+    </head>
+    <body>
+        <div>
+            <app-header></app-header>
+
+            <main class="main-content">
+                <div class="container">
+                    <div class="page-header">
+                        <h1>Mon Panier</h1>
+                    </div>
+
+                    <div class="cart-content">
+                        <div class="cart-empty" style="display: none">
+                            <div class="empty-cart-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 7h13M7 13v7m0-7h10m-10 7h10"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </div>
+                            <h2>Votre panier est vide</h2>
+                            <p>Découvrez nos produits et ajoutez-les à votre panier</p>
+                            <a href="../../../index.html" class="btn btn-primary">Continuer mes achats</a>
+                        </div>
+
+                        <div class="cart-items" style="display: none">
+                            <div class="cart-header">
+                                <button class="btn btn-outline clear-cart-btn">Vider le panier</button>
+                            </div>
+
+                            <div class="cart-list"></div>
+
+                            <div class="cart-summary">
+                                <div class="summary-content">
+                                    <div class="summary-line">
+                                        <span>Sous-total:</span>
+                                        <span class="subtotal">0,00 $</span>
+                                    </div>
+                                    <div class="summary-line">
+                                        <span>Taxes (TPS + TVQ):</span>
+                                        <span class="taxes">0,00 $</span>
+                                    </div>
+                                    <div class="summary-line total-line">
+                                        <span>Total:</span>
+                                        <span class="total">0,00 $</span>
+                                    </div>
+                                </div>
+
+                                <div class="cart-actions">
+                                    <a href="../../../index.html" class="btn btn-outline">Continuer mes achats</a>
+                                    <button class="btn btn-primary checkout-btn">Procéder au checkout</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loading state -->
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Chargement du panier...</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <app-footer></app-footer>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal-overlay" id="confirmModal" style="display: none">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Confirmation</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline cancel-btn">Annuler</button>
+                    <button class="btn btn-danger confirm-btn">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

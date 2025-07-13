@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Checkout - CubeShop</title>
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <script type="module" src="./checkout.js"></script>
+    </head>
+    <body>
+        <div>
+            <app-header></app-header>
+            <main class="main-content">
+                <div class="container">
+                    <div class="page-header">
+                        <h1>Finaliser la commande</h1>
+                    </div>
+
+                    <div class="checkout-content">
+                        <div class="checkout-grid">
+                            <div class="checkout-section">
+                                <div class="section-header">
+                                    <h2>Informations de livraison</h2>
+                                    <span class="step-number">1</span>
+                                </div>
+
+                                <form class="delivery-form" id="deliveryForm">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="firstName">Prénom *</label>
+                                            <input type="text" id="firstName" name="firstName" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Nom *</label>
+                                            <input type="text" id="lastName" name="lastName" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email *</label>
+                                        <input type="email" id="email" name="email" required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phone">Téléphone</label>
+                                        <input type="tel" id="phone" name="phone" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address">Adresse *</label>
+                                        <input type="text" id="address" name="address" required />
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="city">Ville *</label>
+                                            <input type="text" id="city" name="city" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="province">Province *</label>
+                                            <select id="province" name="province" required>
+                                                <option value="">Sélectionner...</option>
+                                                <option value="QC">Québec</option>
+                                                <option value="ON">Ontario</option>
+                                                <option value="BC">Colombie-Britannique</option>
+                                                <option value="AB">Alberta</option>
+                                                <option value="MB">Manitoba</option>
+                                                <option value="SK">Saskatchewan</option>
+                                                <option value="NS">Nouvelle-Écosse</option>
+                                                <option value="NB">Nouveau-Brunswick</option>
+                                                <option value="PE">Île-du-Prince-Édouard</option>
+                                                <option value="NL">Terre-Neuve-et-Labrador</option>
+                                                <option value="YT">Yukon</option>
+                                                <option value="NT">Territoires du Nord-Ouest</option>
+                                                <option value="NU">Nunavut</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="postalCode">Code postal *</label>
+                                            <input
+                                                type="text"
+                                                id="postalCode"
+                                                name="postalCode"
+                                                required
+                                                pattern="[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]"
+                                                placeholder="H1H 1H1"
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="checkout-section">
+                                <div class="section-header">
+                                    <h2>Options de livraison</h2>
+                                    <span class="step-number">2</span>
+                                </div>
+
+                                <div class="delivery-options">
+                                    <label class="delivery-option">
+                                        <input type="radio" name="delivery" value="standard" checked />
+                                        <div class="option-content">
+                                            <div class="option-info">
+                                                <strong>Livraison standard</strong>
+                                                <span class="delivery-time">5-7 jours ouvrables</span>
+                                            </div>
+                                            <span class="option-price">Gratuit</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="delivery-option">
+                                        <input type="radio" name="delivery" value="express" />
+                                        <div class="option-content">
+                                            <div class="option-info">
+                                                <strong>Livraison express</strong>
+                                                <span class="delivery-time">2-3 jours ouvrables</span>
+                                            </div>
+                                            <span class="option-price">9,99 $</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="delivery-option">
+                                        <input type="radio" name="delivery" value="overnight" />
+                                        <div class="option-content">
+                                            <div class="option-info">
+                                                <strong>Livraison le lendemain</strong>
+                                                <span class="delivery-time">1 jour ouvrable</span>
+                                            </div>
+                                            <span class="option-price">19,99 $</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="checkout-section">
+                                <div class="section-header">
+                                    <h2>Résumé de la commande</h2>
+                                    <span class="step-number">3</span>
+                                </div>
+
+                                <div class="order-items"></div>
+
+                                <div class="order-totals">
+                                    <div class="total-line">
+                                        <span>Sous-total:</span>
+                                        <span class="subtotal">0,00 $</span>
+                                    </div>
+                                    <div class="total-line">
+                                        <span>Livraison:</span>
+                                        <span class="shipping-cost">Gratuit</span>
+                                    </div>
+                                    <div class="total-line">
+                                        <span>Taxes (TPS + TVQ):</span>
+                                        <span class="taxes">0,00 $</span>
+                                    </div>
+                                    <div class="total-line final-total">
+                                        <span>Total:</span>
+                                        <span class="total">0,00 $</span>
+                                    </div>
+                                </div>
+
+                                <div class="checkout-actions">
+                                    <a href="../panier/panier.html" class="btn btn-outline">Retour au panier</a>
+                                    <button type="button" class="btn btn-primary place-order-btn">Confirmer la commande</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <app-footer></app-footer>
+        </div>
+
+        <div class="modal-overlay" id="confirmationModal" style="display: none">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Confirmer votre commande</h3>
+                    <button class="modal-close" onclick="this.closest('.modal-overlay').style.display='none'">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir finaliser cette commande ?</p>
+                    <p>Cette action videra votre panier et vous redirigera vers la page d'accueil une fois la commande confirmée.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline cancel-confirmation-btn">Annuler</button>
+                    <button class="btn btn-primary confirm-order-btn">Oui, confirmer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal-overlay" id="successModal" style="display: none">
+            <div class="modal success-modal">
+                <div class="modal-header">
+                    <div class="success-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                            <polyline
+                                points="22,4 12,14.01 9,11.01"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                    </div>
+                    <h3>Commande confirmée !</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Votre commande a été enregistrée avec succès.</p>
+                    <p>Un email de confirmation vous sera envoyé sous peu.</p>
+                    <p>
+                        <strong>Numéro de commande: <span id="orderNumber"></span></strong>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="window.location.href='../../../index.html'">Retour à l'accueil</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-overlay" id="loadingOverlay" style="display: none">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Traitement de votre commande...</p>
+            </div>
+        </div>
+    </body>
+</html>

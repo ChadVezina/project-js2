@@ -120,16 +120,6 @@
     "id": 1742671900
   },
   {
-    "id": 1751719488233,
-    "nom": "Test Cube",
-    "marque": "Test Brand",
-    "image": "https://example.com/image.jpg",
-    "prix": "25.99",
-    "description": "Test description",
-    "createdAt": "2025-07-05T12:44:48.233Z",
-    "updatedAt": "2025-07-05T12:44:48.233Z"
-  },
-  {
     "id": 1751721258817,
     "nom": "produit example",
     "marque": "Test",
@@ -138,15 +128,5 @@
     "description": "test product",
     "createdAt": "2025-07-05T13:14:18.817Z",
     "updatedAt": "2025-07-05T13:14:18.817Z"
-  },
-  {
-    "id": 1751740155880,
-    "nom": "produit example",
-    "marque": "Test",
-    "image": "https://ca.speedcubeshop.com/cdn/shop/files/SCS-Speed-Cube-Pro-3x3-Magnetic-6.jpg",
-    "prix": "45.00",
-    "description": "test produit",
-    "createdAt": "2025-07-05T18:29:15.880Z",
-    "updatedAt": "2025-07-05T18:29:15.880Z"
   }
 ]

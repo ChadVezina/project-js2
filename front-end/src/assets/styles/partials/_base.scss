@@ -22,11 +22,8 @@ h4 {
 }
 
 h1 {
-    font-size: 4rem;
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 3.6rem;
+    position: relative;
 }
 
 h2 {

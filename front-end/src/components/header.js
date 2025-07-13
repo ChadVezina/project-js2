@@ -5,10 +5,10 @@ export class Header extends HTMLElement {
         super();
         this.currentUser = null;
         this.checkAuthStatus();
-        
+
         // Listen for login/logout events
-        window.addEventListener('userLoggedIn', this.handleUserLoggedIn.bind(this));
-        window.addEventListener('userLoggedOut', this.handleUserLoggedOut.bind(this));
+        window.addEventListener("userLoggedIn", this.handleUserLoggedIn.bind(this));
+        window.addEventListener("userLoggedOut", this.handleUserLoggedOut.bind(this));
     }
 
     checkAuthStatus() {
@@ -41,6 +41,7 @@ export class Header extends HTMLElement {
                         <li>
                             <a href="/pages/form/form.html" class="header-nav ${activePage === "form" ? "active" : ""}">Ajouter un produit</a>
                         </li>
+                            ${this.renderCartSection()}
                         <li>
                             ${this.renderAuthSection()}
                         </li>
@@ -48,6 +49,23 @@ export class Header extends HTMLElement {
                 </nav>
             </header>
         `;
+    }
+
+    renderCartSection() {
+        if (this.currentUser) {
+            return `
+                <li>
+                    <a href="/pages/panier/panier.html" class="cart-link" title="Mon panier">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 7h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="cart-text">Panier</span>
+                        <span class="cart-count" style="display: none;">0</span>
+                    </a>
+                </li>
+            `;
+        }
+        return "";
     }
 
     renderAuthSection() {

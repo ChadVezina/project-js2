@@ -1,4 +1,5 @@
 import { apiService } from "../services/apiService.js";
+import { ToastManager } from "./ToastManager.js";
 
 export class AuthManager {
     constructor(options = {}) {
@@ -30,7 +31,7 @@ export class AuthManager {
         inputs.forEach((input) => {
             input.addEventListener("blur", () => this.validateField(input));
             input.addEventListener("input", () => this.clearFieldError(input));
-            
+
             // Add change event for select elements
             if (input.tagName === "SELECT") {
                 input.addEventListener("change", () => this.validateField(input));
@@ -184,7 +185,7 @@ export class AuthManager {
         if (form.id === "registerForm") {
             const termsCheckbox = form.querySelector('[name="terms"]');
             if (!termsCheckbox.checked) {
-                alert("Vous devez accepter les conditions d'utilisation");
+                ToastManager.warning("Vous devez accepter les conditions d'utilisation");
                 isValid = false;
             }
         }
@@ -216,24 +217,28 @@ export class AuthManager {
                 if (response.data && response.data.user) {
                     localStorage.setItem("currentUser", JSON.stringify(response.data.user));
                 }
-                
+
                 // Make sure token is also stored if available
                 if (response.data && response.data.token) {
                     localStorage.setItem("authToken", response.data.token);
                 }
 
-                alert("Connexion réussie! Redirection...");
-                
+                ToastManager.success("Connexion réussie! Redirection...");
+
                 // Trigger a custom event to notify header about login
-                window.dispatchEvent(new CustomEvent('userLoggedIn', {
-                    detail: { user: response.data.user }
-                }));
-                
-                window.location.href = "../../index.html";
+                window.dispatchEvent(
+                    new CustomEvent("userLoggedIn", {
+                        detail: { user: response.data.user },
+                    })
+                );
+
+                setTimeout(() => {
+                    window.location.href = "../../index.html";
+                }, 1000);
             } catch (error) {
                 this.hideLoadingState(form);
                 console.error("Login failed:", error);
-                alert("Erreur de connexion: " + error.message);
+                ToastManager.error("Erreur de connexion: " + error.message);
             }
         }
     }
@@ -248,7 +253,7 @@ export class AuthManager {
                 username: formData.get("username"),
                 email: formData.get("email"),
                 password: formData.get("password"),
-                role: formData.get("role")
+                role: formData.get("role"),
             };
 
             this.showLoadingState(form);
@@ -258,13 +263,13 @@ export class AuthManager {
 
                 this.hideLoadingState(form);
                 console.log("Registration successful:", response);
-                alert("Inscription réussie! Vous pouvez maintenant vous connecter.");
+                ToastManager.success("Inscription réussie! Vous pouvez maintenant vous connecter.");
                 this.switchTab("login");
                 form.reset();
             } catch (error) {
                 this.hideLoadingState(form);
                 console.error("Registration failed:", error);
-                alert("Erreur d'inscription: " + error.message);
+                ToastManager.error("Erreur d'inscription: " + error.message);
             }
         }
     }
