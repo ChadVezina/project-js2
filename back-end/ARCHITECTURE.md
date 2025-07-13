@@ -298,23 +298,6 @@ npm run preview    # Prévisualisation du build
 -   `GET /api` - Documentation API
 -   `GET /api/health` - Statut de l'API
 
-## Tests
-
-### Exécution des tests
-
-```bash
-cd back-end
-node tests/test-api.js         # Tests généraux API
-node tests/test-login.js       # Tests d'authentification
-node tests/test-privileges.js  # Tests de privilèges
-```
-
-### Types de tests
-
--   **Tests d'API** : Validation des endpoints
--   **Tests d'authentification** : Vérification du système de login
--   **Tests de privilèges** : Contrôle des autorisations
-
 ## Sécurité
 
 ### Authentification
