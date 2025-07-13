@@ -1,6 +1,6 @@
 # CubeShop Backend API
 
-Backend Express.js pour l'application CubeShop avec gestion des produits et utilisateurs via JSONArrayDatabase. Ce backend inclut un système d'authentification et d'autorisation complet avec gestion des rôles.
+Backend Express.js pour l'application CubeShop avec gestion des produits et utilisateurs via JSONArrayDatabase. Ce backend inclut un système d'authentification et d'autorisation complet avec gestion des rôles, supportant une application e-commerce moderne avec panier d'achat et processus de commande.
 
 ## Architecture
 
@@ -27,12 +27,13 @@ Le serveur démarre par défaut sur http://localhost:3000
 
 ## Système d'authentification
 
-Le backend utilise un système d'authentification par headers simulé avec gestion des rôles :
+Le backend utilise un système d'authentification par headers simulé avec gestion des rôles, supportant la persistance des données utilisateur incluant les paniers d'achat :
 
 -   **Rôles disponibles** : `admin`, `user`
 -   **Authentification** : Via headers `user-id` et `user-role`
 -   **Permissions** : Contrôle d'accès basé sur les rôles
 -   **Sécurité** : Validation des données et gestion des erreurs
+-   **🆕 Support e-commerce** : Gestion des sessions pour paniers persistants
 
 ## Endpoints API
 
@@ -202,7 +203,7 @@ Le backend utilise un système d'authentification par headers simulé avec gesti
 
 ## Comptes de test
 
-Le système inclut des comptes de test préconfigurés :
+Le système inclut des comptes de test préconfigurés pour tester toutes les fonctionnalités e-commerce :
 
 ### Administrateur
 
@@ -210,6 +211,7 @@ Le système inclut des comptes de test préconfigurés :
 -   **Email**: `admin@cubeshop.com`
 -   **Password**: `Admin123`
 -   **Role**: `admin`
+-   **🆕 Accès e-commerce**: Gestion complète des produits, panier personnel
 
 ### Utilisateur standard
 
@@ -217,6 +219,7 @@ Le système inclut des comptes de test préconfigurés :
 -   **Email**: `john.doe@example.com`
 -   **Password**: `password123`
 -   **Role**: `user`
+-   **🆕 Accès e-commerce**: Panier personnel, processus de commande complet
 
 ## Format des réponses
 
@@ -257,6 +260,15 @@ Les données sont stockées dans des fichiers JSON via JSONArrayDatabase :
 
 -   `data/products.json` - Produits
 -   `data/users.json` - Utilisateurs
+
+### 🆕 Données e-commerce côté client
+
+Bien que le backend utilise des fichiers JSON, le frontend gère localement :
+
+-   **Paniers utilisateur** - Stockés dans localStorage avec clé `cart_${userId}`
+-   **Adresses de livraison** - Sauvegardées avec clé `address_${userId}`
+-   **Sessions utilisateur** - Gestion des tokens d'authentification
+-   **Données de commande** - Génération côté client avec validation
 
 ## Structure du projet
 
@@ -306,6 +318,45 @@ node test-login.js
 node test-privileges.js
 ```
 
+## 🆕 Fonctionnalités e-commerce
+
+### Support côté backend
+
+Bien que la logique e-commerce soit principalement gérée côté client, le backend fournit :
+
+#### Authentification pour e-commerce
+-   **Sessions utilisateur** : Support des tokens pour identifier les utilisateurs
+-   **Persistance des données** : Les paniers sont liés aux comptes utilisateur
+-   **Validation d'accès** : Vérification des droits pour les pages panier/checkout
+
+#### Support des produits pour e-commerce
+-   **Données produit complètes** : Nom, prix, description, image pour affichage panier
+-   **Validation des produits** : Vérification d'existence pour ajout au panier
+-   **Gestion des stocks** : Prêt pour intégration future de gestion des inventaires
+
+#### Architecture scalable
+-   **Structure MVC** : Prête pour extension avec contrôleurs de commandes
+-   **Middleware modulaire** : Facilement extensible pour gestion des paniers serveur
+-   **Base de données JSON** : Migration facile vers base relationnelle pour commandes
+
+### Intégrations futures possibles
+
+#### Gestion des commandes côté serveur
+-   **Table commandes** : Stockage permanent des commandes
+-   **Endpoints de commande** : `POST /api/orders`, `GET /api/orders/:id`
+-   **Statuts de commande** : En attente, confirmée, expédiée, livrée
+-   **Historique utilisateur** : Consultation des commandes passées
+
+#### Système de paiement
+-   **Intégration Stripe/PayPal** : Traitement des paiements sécurisés
+-   **Validation des montants** : Vérification côté serveur des totaux
+-   **Webhook de confirmation** : Mise à jour automatique des statuts
+
+#### Gestion des stocks
+-   **Quantités disponibles** : Ajout du champ stock aux produits
+-   **Réservation temporaire** : Blocage des articles pendant checkout
+-   **Notifications de stock** : Alertes pour réapprovisionnement
+
 ## Sécurité
 
 -   **Validation des données** : Validation côté serveur pour tous les endpoints
@@ -313,23 +364,18 @@ node test-privileges.js
 -   **Contrôle d'accès** : Système de permissions basé sur les rôles
 -   **Sanitisation** : Suppression des mots de passe dans les réponses
 -   **Validation des rôles** : Vérification des rôles valides (`admin`, `user`)
+-   **🆕 Sécurité e-commerce** : 
+     - Validation d'authentification pour accès aux paniers
+     - Protection des données sensibles de commande
+     - Vérification d'appartenance des paniers aux utilisateurs
 
 ## Développement
 
 ### Structure MVC
 
-Le backend suit le pattern MVC avec :
+Le backend suit le pattern MVC avec architecture prête pour l'e-commerce :
 
--   **Models** : Gestion des données et logique métier
--   **Views** : Réponses JSON standardisées
--   **Controllers** : Traitement des requêtes et coordination
+-   **Models** : Gestion des données produits et utilisateurs, extensible pour commandes
+-   **Views** : Réponses JSON standardisées compatibles avec frontend e-commerce
+-   **Controllers** : Traitement des requêtes avec support authentification pour panier
 
-### Gestion des erreurs
-
-Format standardisé des erreurs avec codes HTTP appropriés :
-
--   `400` : Erreur de validation
--   `401` : Authentification requise
--   `403` : Accès refusé (permissions insuffisantes)
--   `404` : Ressource non trouvée
--   `500` : Erreur interne du serveur

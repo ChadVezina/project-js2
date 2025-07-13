@@ -10,6 +10,8 @@
 
 - **🔐 Authentification complète** - Connexion, inscription et gestion des rôles
 - **🛍️ Catalogue de produits** - Affichage, filtrage et pagination intelligente
+- **� Système de panier** - Ajout, modification et gestion des articles avec persistance
+- **💳 Processus de checkout** - Finalisation des commandes avec informations de livraison
 - **👥 Gestion des utilisateurs** - Interface d'administration avec contrôle d'accès
 - **📱 Interface responsive** - Design moderne adapté à tous les appareils
 - **🔗 API REST** - Backend robuste avec architecture MVC
@@ -137,6 +139,7 @@ L'application démarre sur `http://localhost:5173`
 - Catalogue de produits avec grille responsive
 - Filtrage par marque avec dropdown dynamique
 - Pagination intelligente (bouton "Afficher Plus")
+- Boutons d'ajout au panier intégrés aux cartes produit
 - Liens vers les pages de détail
 
 ### Page d'authentification (`/pages/auth/`)
@@ -147,8 +150,23 @@ L'application démarre sur `http://localhost:5173`
 
 ### Page de produit (`/pages/produit/`)
 - Affichage détaillé d'un produit
+- Contrôles d'ajout au panier avec gestion des quantités
 - Navigation avec gestion d'historique
 - Gestion des erreurs (produit non trouvé)
+
+### Page du panier (`/pages/panier/`)
+- Affichage des articles avec quantités et prix
+- Modification des quantités et suppression d'articles
+- Calcul automatique des sous-totaux, taxes et total
+- Bouton de vidage du panier avec confirmation
+- Redirection vers le checkout
+
+### Page de checkout (`/pages/checkout/`)
+- Formulaire de livraison avec validation en temps réel
+- Options de livraison (standard, express, overnight)
+- Résumé de commande avec calcul des taxes
+- Sauvegarde des informations d'adresse
+- Confirmation de commande avec numéro de suivi
 
 ### Page d'ajout de produit (`/pages/form/`)
 - Formulaire complet avec validation
@@ -159,9 +177,24 @@ L'application démarre sur `http://localhost:5173`
 ## 🔧 Fonctionnalités avancées
 
 ### Gestion d'état
-- **LocalStorage** pour la persistance des sessions
+- **LocalStorage** pour la persistance des sessions et paniers
 - **EventEmitter** pour la communication inter-composants
 - **Tokens d'authentification** pour les sessions sécurisées
+- **Gestion des paniers par utilisateur** avec sauvegarde automatique
+
+### Système de panier
+- **Ajout/suppression d'articles** avec notifications visuelles
+- **Gestion des quantités** avec contrôles intuitifs
+- **Calcul automatique** des totaux et taxes (TPS + TVQ)
+- **Persistance par utilisateur** liée à l'authentification
+- **États de chargement** et feedback utilisateur
+
+### Processus de commande
+- **Validation de formulaire** en temps réel avec critères visuels
+- **Options de livraison** avec tarifs dynamiques
+- **Sauvegarde d'adresse** pour réutilisation future
+- **Confirmation de commande** avec numéro de suivi
+- **Vidage automatique** du panier après commande
 
 ### Sécurité
 - **Validation côté client et serveur**
@@ -205,14 +238,12 @@ npm run preview
 ## 🔮 Extensions futures
 
 ### Fonctionnalités e-commerce
-- Système de panier d'achat
-- Gestion des commandes
 - Système de paiement
-- Gestion des stocks
+- Gestion des stocks en temps réel
+- Historique des commandes
 
 ### Améliorations techniques
 - Base de données relationnelle (PostgreSQL/MySQL)
-- Authentification JWT avec refresh tokens
 - Tests automatisés (Jest/Cypress)
 - Déploiement avec Docker
 

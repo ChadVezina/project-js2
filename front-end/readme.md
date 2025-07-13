@@ -19,6 +19,16 @@ Interface utilisateur moderne pour CubeShop - une application de commerce élect
 -   **Pagination intelligente** (bouton "Afficher Plus")
 -   **Pages de détail** produit avec navigation
 -   **Ajout de produits** (réservé aux administrateurs)
+-   **Système de panier** avec ajout/modification/suppression d'articles
+
+### 🛒 Système e-commerce complet
+
+-   **Panier d'achat** avec persistance par utilisateur
+-   **Gestion des quantités** avec contrôles intuitifs
+-   **Calcul automatique** des totaux et taxes (TPS + TVQ)
+-   **Processus de checkout** avec formulaire de livraison
+-   **Options de livraison** multiples avec tarifs
+-   **Confirmation de commande** avec numéro de suivi
 
 ### 👥 Gestion des utilisateurs
 
@@ -91,9 +101,40 @@ npm run preview
 
 -   **Affichage détaillé** du produit sélectionné
 -   **Image, nom, marque, prix et description** avec mise en forme avancée
+-   **Contrôles de panier** intégrés (ajout, modification des quantités)
+-   **Gestion des quantités** avec boutons + et - intuitifs
+-   **Feedback visuel** pour les actions du panier
 -   **Gestion des produits non trouvés** avec page d'erreur personnalisée
 -   **Navigation fluide** avec gestion de l'historique
 -   **Bouton de retour** vers la liste des produits
+
+### Page du panier (`/pages/panier/panier.html`)
+
+-   **Protection par authentification** avec redirection automatique
+-   **Affichage des articles** avec images, noms, prix et quantités
+-   **Contrôles de quantité** pour chaque article avec limites (1-99)
+-   **Suppression d'articles** avec modales de confirmation
+-   **Calcul automatique** des sous-totaux, taxes (TPS + TVQ) et total
+-   **Bouton de vidage** du panier avec confirmation
+-   **États de chargement** avec animations
+-   **Redirection vers checkout** pour finaliser la commande
+-   **Gestion du panier vide** avec message et bouton de retour aux achats
+
+### Page de checkout (`/pages/checkout/checkout.html`)
+
+-   **Protection par authentification** avec vérification des droits
+-   **Formulaire de livraison** complet avec validation en temps réel
+-   **Préremplissage automatique** avec les données utilisateur sauvegardées
+-   **Options de livraison** avec tarifs différenciés :
+     - Standard (gratuit, 5-7 jours)
+     - Express (9,99$, 2-3 jours)
+     - Le lendemain (19,99$, 1 jour)
+-   **Résumé de commande** avec articles, quantités et prix
+-   **Calcul dynamique** des totaux avec livraison et taxes
+-   **Validation de formulaire** avec feedback visuel instantané
+-   **Sauvegarde d'adresse** pour réutilisation future
+-   **Confirmation de commande** avec modal et numéro de suivi
+-   **Vidage automatique** du panier après commande réussie
 
 ### Page d'ajout de produit (`/pages/form/form.html`)
 
@@ -234,12 +275,55 @@ Gestion avancée des formulaires d'ajout de produits :
 -   **Protection par authentification** avec vérification des rôles
 -   **États de chargement** et feedback visuel
 
+### [`CartManager`](src/classes/CartManager.js)
+
+Gestionnaire complet du panier d'achat :
+
+-   **Gestion des articles** avec ajout, suppression et modification des quantités
+-   **Persistance par utilisateur** avec sauvegarde dans localStorage
+-   **Calculs automatiques** des totaux et compteurs d'articles
+-   **Événements en temps réel** pour mise à jour de l'interface
+-   **Intégration avec ToastManager** pour notifications utilisateur
+-   **Gestion des sessions** avec nettoyage automatique à la déconnexion
+-   **Validation des quantités** avec limites min/max
+-   **État de synchronisation** avec l'interface utilisateur
+
+### [`PanierPage`](src/classes/PanierPage.js)
+
+Page dédiée à la gestion du panier :
+
+-   **Interface complète** de gestion des articles du panier
+-   **Contrôles de quantité** intuitifs avec boutons + et -
+-   **Modales de confirmation** pour suppression et vidage
+-   **Calcul des taxes** automatique (TPS + TVQ à 14,975%)
+-   **États de chargement** avec animations fluides
+-   **Protection par authentification** avec redirection
+-   **Intégration avec CartManager** pour synchronisation
+-   **Redirection intelligente** vers checkout ou catalogue
+
+### [`CheckoutPage`](src/classes/CheckoutPage.js)
+
+Processus complet de finalisation de commande :
+
+-   **Formulaire de livraison** avec validation en temps réel
+-   **Préremplissage automatique** des données utilisateur
+-   **Options de livraison** avec tarifs dynamiques
+-   **Validation de code postal** canadien avec formatage automatique
+-   **Sauvegarde d'adresse** pour commandes futures
+-   **Résumé de commande** avec calculs détaillés
+-   **Génération de numéro** de commande unique
+-   **Modal de confirmation** avec états de chargement
+-   **Intégration complète** avec le système de panier
+
 ### [`ProductPage`](src/classes/ProductPage.js)
 
-Affichage détaillé des produits :
+Affichage détaillé des produits avec fonctionnalités e-commerce :
 
 -   **Récupération des données** produit via API
 -   **Rendu dynamique** du contenu avec templating
+-   **Intégration du panier** avec boutons d'ajout/suppression
+-   **Contrôles de quantité** avec gestion des limites
+-   **Feedback visuel** pour les actions du panier
 -   **Gestion des erreurs** et produits non trouvés
 -   **Navigation fluide** avec gestion de l'historique
 -   **Optimisation des images** avec lazy loading
@@ -398,11 +482,12 @@ authManager.on("loginSuccess", (user) => {
 
 ## Gestion d'État
 
--   **localStorage** pour la persistance des produits et sessions
+-   **localStorage** pour la persistance des produits, sessions et paniers par utilisateur
 -   **Classes ES6** pour l'état local des composants
 -   **EventEmitter** pour la communication inter-composants
 -   **URL parameters** pour l'état de navigation
 -   **Tokens d'authentification** pour les sessions utilisateur
+-   **Synchronisation panier** avec connexion/déconnexion utilisateur
 
 ## Responsive Design
 
@@ -416,6 +501,19 @@ Design adaptatif avec breakpoints :
 
 ## Fonctionnalités Avancées
 
+### Système e-commerce complet
+
+-   **Panier d'achat persistant** avec sauvegarde par utilisateur
+-   **Gestion des quantités** avec contrôles visuels intuitifs
+-   **Calcul automatique des taxes** (TPS + TVQ) en temps réel
+-   **Processus de checkout** avec formulaire de livraison complet
+-   **Options de livraison** multiples avec tarifs différenciés
+-   **Validation de code postal** canadien avec formatage automatique
+-   **Sauvegarde d'adresse** pour réutilisation dans les commandes futures
+-   **Génération de numéros** de commande uniques
+-   **Modales de confirmation** pour actions critiques
+-   **États de chargement** avec feedback visuel pour toutes les opérations
+
 ### Système d'authentification intégré
 
 -   **Formulaires de connexion/inscription** avec validation avancée
@@ -423,7 +521,7 @@ Design adaptatif avec breakpoints :
 -   **Protection des routes** avec `AuthGuard` et vérification serveur
 -   **Feedback utilisateur** avec états de chargement et animations
 -   **Gestion des rôles** avec permissions différenciées
--   **Déconnexion sécurisée** avec nettoyage des données
+-   **Déconnexion sécurisée** avec nettoyage des données et du panier
 
 ### Pagination et filtrage intelligents
 
@@ -436,12 +534,14 @@ Design adaptatif avec breakpoints :
 
 ### Validation de formulaires avancée
 
--   **Validation en temps réel** avec `FormValidator`
--   **Messages d'erreur contextuels** par champ
+-   **Validation en temps réel** avec `FormValidator` pour tous les formulaires
+-   **Messages d'erreur contextuels** par champ avec feedback visuel
 -   **Prévention de soumission invalide** avec désactivation bouton
 -   **Feedback visuel immédiat** avec styles CSS dynamiques
 -   **Validation des mots de passe** avec critères de sécurité
 -   **Vérification de la correspondance** des mots de passe
+-   **Validation de code postal** canadien avec formatage automatique
+-   **Scroll automatique** vers les champs en erreur avec animation
 
 ### Gestion des erreurs robuste
 
@@ -449,6 +549,8 @@ Design adaptatif avec breakpoints :
 -   **Gestion des timeouts** API avec retry automatique
 -   **Validation côté client** avant soumission
 -   **Messages d'erreur localisés** en français
+-   **Notifications toast** pour feedback utilisateur immédiat
+-   **Modales de confirmation** pour actions critiques
 -   **Logging détaillé** pour le débogage
 -   **Fallback gracieux** en cas d'erreur critique
 
@@ -459,7 +561,7 @@ Design adaptatif avec breakpoints :
 -   **CSS modulaire** avec partials SCSS
 -   **Images optimisées** avec lazy loading et formats modernes
 -   **Bundle moderne** ES6+ avec fallbacks
--   **Caching intelligent** avec localStorage
+-   **Caching intelligent** avec localStorage pour paniers et sessions
 -   **Minification** CSS et JS en production
 
 ## Browser Support
@@ -467,25 +569,21 @@ Design adaptatif avec breakpoints :
 -   **Modules ES6** (Chrome 61+, Firefox 60+, Safari 11+)
 -   **CSS Grid** et Flexbox pour la mise en page
 -   **Web Components** natifs avec polyfills
--   **LocalStorage** pour la persistance
+-   **LocalStorage** pour la persistance des paniers et sessions
 -   **Fetch API** pour les requêtes HTTP
 -   **CSS Custom Properties** pour les variables
 
 ## Extensions Futures
 
 ### Intégration backend complète
-
--   **Authentification JWT** avec refresh tokens
 -   **Gestion des sessions** serveur sécurisée
 -   **API REST** complète avec validation avancée
--   **Gestion des permissions** granulaire côté serveur
 
-### Fonctionnalités e-commerce
-
--   **Système de panier d'achat** avec persistance
--   **Gestion des commandes** et historique
--   **Système de paiement** intégré
+### Fonctionnalités e-commerce avancées
+-   **Système de paiement** intégré (Stripe, PayPal)
 -   **Gestion des stocks** en temps réel
+-   **Historique des commandes** utilisateur
+-   **Système de tracking** des livraisons
 
 ### Expérience utilisateur avancée
 
@@ -493,26 +591,32 @@ Design adaptatif avec breakpoints :
 -   **Filtres avancés** (prix, catégorie, popularité)
 -   **Système de favoris** avec synchronisation
 -   **Recommandations personnalisées** basées sur l'historique
+-   **Notifications de stock** et promotions
+-   **Système de wishlist** partageable
 
 ### Fonctionnalités techniques
 
 -   **Mode sombre/clair** avec préférences utilisateur
 -   **PWA** avec service workers et cache offline
--   **Notifications push** pour les nouveaux produits
+-   **Notifications push** pour les nouveaux produits et commandes
 -   **Internationalisation** multi-langues (i18n)
+-   **Analytics avancées** pour tracking e-commerce
+-   **Optimisation SEO** pour améliorer la visibilité
 
 ### Qualité et performance
 
--   **Tests unitaires et E2E** avec Jest/Cypress
--   **Monitoring des performances** avec analytics
+-   **Tests unitaires et E2E** avec Jest/Cypress pour toutes les fonctionnalités
+-   **Tests de panier** et processus de commande automatisés
+-   **Monitoring des performances** avec analytics e-commerce
 -   **Optimisation des images** avec CDN
 -   **Lazy loading** avancé pour les ressources
 
 ### Administration avancée
 
--   **Tableau de bord** administrateur avec statistiques
+-   **Tableau de bord** administrateur avec statistiques de ventes
+-   **Gestion des commandes** avec statuts et tracking
 -   **Gestion des utilisateurs** avec permissions granulaires
--   **Système de logs** et audit trail
+-   **Système de logs** et audit trail pour les transactions
 -   **Sauvegarde et restauration** des données
 
 ## Déploiement et production
@@ -520,7 +624,7 @@ Design adaptatif avec breakpoints :
 ### Optimisations de production
 
 -   **Minification** CSS et JS automatique
--   **Bundle splitting** pour un chargement optimisé
+-   **Bundle splitting** pour un chargement optimisé avec code splitting du panier
 -   **Cache headers** pour les ressources statiques
 -   **Compression gzip** pour réduire la taille des fichiers
 
@@ -530,10 +634,5 @@ Design adaptatif avec breakpoints :
 -   **Validation des entrées** côté client et serveur
 -   **Protection CSRF** avec tokens
 -   **Chiffrement des données** sensibles
-
-### Monitoring
-
--   **Logging des erreurs** avec service externe
--   **Métriques de performance** utilisateur
--   **Alertes automatiques** en cas de problème
--   **Tableau de bord** de monitoring en temps réel
+-   **Sécurisation des paniers** avec validation d'utilisateur
+-   **Protection des données** de commande avec chiffrement

@@ -45,14 +45,18 @@ my-project-js2/
     │   │   └── styles/          # Feuilles de style SCSS
     │   ├── classes/             # Classes JavaScript modulaires
     │   │   ├── AuthManager.js
+    │   │   ├── CartManager.js   # 🆕 Gestion du panier d'achat
+    │   │   ├── CheckoutPage.js  # 🆕 Processus de commande
     │   │   ├── CubeShopApp.js
     │   │   ├── FilterManager.js
     │   │   ├── FormManager.js
     │   │   ├── FormValidator.js
     │   │   ├── PaginationManager.js
+    │   │   ├── PanierPage.js    # 🆕 Page du panier
     │   │   ├── ProductGrid.js
     │   │   ├── ProductPage.js
-    │   │   └── ProductService.js
+    │   │   ├── ProductService.js
+    │   │   └── ToastManager.js  # 🆕 Notifications toast
     │   ├── components/          # Composants réutilisables
     │   │   ├── footer.js
     │   │   └── header.js
@@ -60,7 +64,9 @@ my-project-js2/
     │   │   └── config.js        # Configuration frontend
     │   ├── pages/               # Pages de l'application
     │   │   ├── auth/           # Page d'authentification
+    │   │   ├── checkout/       # 🆕 Page de checkout
     │   │   ├── form/           # Page de formulaire
+    │   │   ├── panier/         # 🆕 Page du panier
     │   │   └── produit/        # Page produit
     │   ├── services/
     │   │   └── apiService.js    # Service d'API
@@ -130,14 +136,18 @@ my-project-js2/
 ### 1. Classes (`src/classes/`)
 
 -   **AuthManager.js** : Gestion de l'authentification côté client
+-   **CartManager.js** : 🆕 Gestionnaire complet du panier d'achat avec persistance
+-   **CheckoutPage.js** : 🆕 Processus de finalisation de commande
 -   **CubeShopApp.js** : Application principale
 -   **FilterManager.js** : Gestion des filtres de produits
 -   **FormManager.js** : Gestion des formulaires
 -   **FormValidator.js** : Validation des formulaires
 -   **PaginationManager.js** : Gestion de la pagination
+-   **PanierPage.js** : 🆕 Interface de gestion du panier
 -   **ProductGrid.js** : Affichage grille des produits
--   **ProductPage.js** : Page détail produit
+-   **ProductPage.js** : Page détail produit avec fonctionnalités panier
 -   **ProductService.js** : Service de gestion des produits
+-   **ToastManager.js** : 🆕 Système de notifications toast
 
 ### 2. Components (`src/components/`)
 
@@ -147,8 +157,10 @@ my-project-js2/
 ### 3. Pages (`src/pages/`)
 
 -   **auth/** : Page d'authentification (login/register)
+-   **checkout/** : 🆕 Page de finalisation de commande avec formulaire de livraison
 -   **form/** : Page de formulaire de produits
--   **produit/** : Page détail produit
+-   **panier/** : 🆕 Page de gestion du panier d'achat
+-   **produit/** : Page détail produit avec contrôles de panier
 -   Chaque page contient HTML, JS et SCSS spécifiques
 
 ### 4. Services (`src/services/`)
@@ -201,9 +213,20 @@ my-project-js2/
 ### Gestion des produits
 
 -   **CRUD complet** des produits
+-   **Intégration panier** avec ajout/suppression depuis les pages produit
 -   **Filtrage et pagination** côté client
 -   **Validation des données** côté serveur et client
 -   **Interface d'administration** pour les admins
+
+### Système e-commerce
+
+-   **🆕 Panier d'achat** avec persistance par utilisateur dans localStorage
+-   **🆕 Gestion des quantités** avec contrôles visuels et validation
+-   **🆕 Calcul automatique** des totaux et taxes (TPS + TVQ)
+-   **🆕 Processus de checkout** avec formulaire de livraison complet
+-   **🆕 Options de livraison** multiples avec tarifs différenciés
+-   **🆕 Notifications toast** pour feedback utilisateur immédiat
+-   **🆕 Confirmation de commande** avec génération de numéro unique
 
 ### Gestion des utilisateurs
 
@@ -223,12 +246,14 @@ my-project-js2/
 
 1. **Séparation des responsabilités** : Frontend et backend découplés
 2. **Maintenabilité** : Code modulaire et bien organisé
-3. **Extensibilité** : Facilité d'ajout de nouvelles fonctionnalités
+3. **Extensibilité** : Facilité d'ajout de nouvelles fonctionnalités e-commerce
 4. **Réutilisabilité** : Composants et services réutilisables
 5. **Testabilité** : Chaque composant peut être testé indépendamment
 6. **Sécurité** : Système d'authentification et contrôle d'accès
-7. **Performance** : Optimisations côté client et serveur
+7. **Performance** : Optimisations côté client et serveur avec cache localStorage
 8. **Responsive** : Interface adaptée à tous les appareils
+9. **🆕 Expérience e-commerce** : Panier, checkout et notifications intégrés
+10. **🆕 Persistance de données** : Sauvegarde automatique des paniers par utilisateur
 
 ## Démarrage de l'application
 
