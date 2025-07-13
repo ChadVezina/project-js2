@@ -203,16 +203,6 @@ L'application démarre sur `http://localhost:5173`
 - **Gestion des erreurs** robuste
 
 
-## 🧪 Tests
-
-### Backend
-```bash
-cd back-end
-node test-api.js          # Tests généraux de l'API
-node test-login.js        # Tests d'authentification
-node test-privileges.js   # Tests des permissions
-```
-
 ### Frontend
 Tests manuels disponibles via l'interface utilisateur :
 - Connexion/Inscription
