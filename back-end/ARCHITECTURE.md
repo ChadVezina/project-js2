@@ -30,10 +30,10 @@ my-project-js2/
 │   ├── data/
 │   │   ├── products.json          # Données des produits
 │   │   └── users.json             # Données des utilisateurs
-│   ├── tests/                     # Tests de l'API
-│   │   ├── test-api.js           # Tests généraux API
-│   │   ├── test-login.js         # Tests d'authentification
-│   │   └── test-privileges.js    # Tests de privilèges
+│   |
+│   |
+│   |
+│   |
 │   ├── server.js                 # Point d'entrée du serveur
 │   └── package.json
 └── front-end/                    # Interface utilisateur Vite
@@ -124,12 +124,6 @@ my-project-js2/
     -   Opérations CRUD sur fichiers JSON
     -   Gestion des IDs auto-incrémentés
     -   Sauvegarde atomique des données
-
-### 7. Tests (`tests/`)
-
--   **test-api.js** : Tests généraux de l'API
--   **test-login.js** : Tests du système d'authentification
--   **test-privileges.js** : Tests du système de privilèges et autorisations
 
 ## Composants Frontend
 
